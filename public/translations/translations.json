@@ -1,0 +1,136 @@
+{
+  "en": {
+    "common": {
+      "more": "More",
+      "order_price": "Order price"
+    },
+    "header": {
+      "menu_btn": "Menu",
+      "search_products": "Search for products",
+      "search_infos": "Product name, category, type..."
+    },
+    "main_menu": {
+      "catalog": "Catalog",
+      "buyers": "For buyers",
+      "contacts": "Contacts",
+      "watches": "Watches",
+      "accessories": "Accessories",
+      "care": "Watch care",
+      "tools": "Watch tools",
+      "all": "All catalog",
+      "about": "About",
+      "blog": "Blog",
+      "shipping": "Shipping & Payment",
+      "returns": "Returns",
+      "tg": "Telegram",
+      "ins": "Instagram",
+      "types": "By Type",
+      "collections": "Collections",
+      "styles": "Style"
+    },
+    "comparison": {
+      "mens_watches": "Men's Watches",
+      "womens_watches": "Women's Watches",
+      "smart_watches": "Smart Watches",
+      "mechanical_watches": "Mechanical Watches",
+      "quartz_watches": "Quartz Watches",
+      "automatic_watches": "Automatic Watches",
+      "luxury_watches": "Luxury Watches",
+      "sport_watches": "Sport Watches",
+      "chronograph": "Chronographs",
+      "vintage_watches": "Vintage Watches",
+      "limited_edition": "Limited Edition",
+      "main_heading": "Comparison"
+    },
+    "breadcrumbs": {
+      "main": "Home",
+      "comparison": "Comparison",
+      "cart": "Cart",
+      "favorites": "Favorites",
+      "catalog": "Catalog",
+      "profile": "Profile",
+      "watches": "Watches",
+      "accessories": "Accessories",
+      "souvenirs": "Souvenirs",
+      "order": "Checkout",
+      "personal_data_policy": "Data Processing Policy",
+      "privacy_policy": "Privacy Policy",
+      "watched_products": "Viewed Products",
+      "collection_products": "Products by Collection"
+    },
+    "footer": {
+      "copyright": "©RoyalTick All rights reserved",
+      "policy": "Data processing policy",
+      "privacy": "Privacy policy",
+      "mobile_version": "Mobile version",
+      "full_version": "Full version of the site"
+    }
+  },
+  "ua": {
+    "common": {
+      "more": "Ще",
+      "order_price": "Вартість замовлення"
+    },
+    "header": {
+      "menu_btn": "Меню",
+      "search_products": "Пошук товарів",
+      "search_infos": "Назва товару, категорія, тип..."
+    },
+    "main_menu": {
+      "catalog": "Каталог",
+      "buyers": "Покупцям",
+      "contacts": "Контакти",
+      "watches": "Годинники",
+      "accessories": "Аксесуари",
+      "care": "Догляд за годинниками",
+      "tools": "Інструменти для годинників",
+      "all": "Весь каталог",
+      "about": "Про нас",
+      "blog": "Блог",
+      "shipping": "Доставка та оплата",
+      "returns": "Повернення",
+      "tg": "Телеграм",
+      "ins": "Інстаграм",
+      "types": "За типом",
+      "collections": "Колекції",
+      "styles": "Стиль"
+    },
+    "comparison": {
+      "mens_watches": "Чоловічі годинники",
+      "womens_watches": "Жіночі годинники",
+      "smart_watches": "Смарт-годинники",
+      "mechanical_watches": "Механічні годинники",
+      "quartz_watches": "Кварцові годинники",
+      "automatic_watches": "Автоматичні годинники",
+      "luxury_watches": "Преміальні годинники",
+      "sport_watches": "Спортивні годинники",
+      "chronograph": "Хронографи",
+      "vintage_watches": "Вінтажні годинники",
+      "limited_edition": "Лімітовані серії",
+      "main_heading": "Порівняння"
+    },
+    "breadcrumbs": {
+      "main": "Головна",
+      "comparison": "Порівняння",
+      "cart": "Кошик",
+      "favorites": "Улюблені",
+      "catalog": "Каталог",
+      "profile": "Профіль",
+      "watches": "Годинники",
+      "accessories": "Аксесуари",
+      "souvenirs": "Сувеніри",
+      "order": "Оформлення замовлення",
+      "personal_data_policy": "Політика обробки даних",
+      "privacy_policy": "Політика конфіденційності",
+      "watched_products": "Переглянуті товари",
+      "collection_products": "Товари за колекцією"
+    },
+    "footer": {
+      "copyright": "© RoyalTick. Усі права захищені",
+      "policy": "Політика обробки персональних даних",
+      "privacy": "Політика конфіденційності",
+      "mobile_version": "Мобільна версія",
+      "full_version": "Повна версія сайту"
+    }
+  }
+}
