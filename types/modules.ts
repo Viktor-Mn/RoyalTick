@@ -1,4 +1,5 @@
 import { JSX } from 'react/jsx-dev-runtime'
+import { IProduct } from './common'
 
 export interface IAccordionProps {
   children: React.ReactNode
@@ -20,4 +21,14 @@ export interface ICatalogMenuButtonProps {
   name: string
   isActive: boolean
   handler: VoidFunction
+}
+
+export interface IProductsListItemProps {
+  item: IProduct
+  title?: string
+}
+
+export interface IProductLabelProps {
+  isNew: boolean
+  isBestseller: boolean
 }

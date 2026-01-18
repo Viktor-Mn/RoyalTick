@@ -2,7 +2,9 @@
   "en": {
     "common": {
       "more": "More",
-      "order_price": "Order price"
+      "order_price": "Order price",
+      "ad": "Ad",
+      "all_link": "All"
     },
     "header": {
       "menu_btn": "Menu",
@@ -64,12 +66,78 @@
       "privacy": "Privacy policy",
       "mobile_version": "Mobile version",
       "full_version": "Full version of the site"
+    },
+    "main_page": {
+      "hero_hidden_title": "RoyalTick online watch store",
+      "hero_title": "RoyalTick",
+      "hero_description": "Time matters",
+      "hero_subtitle": "with the new “Line” collection",
+      "catalog_btn": "Catalog",
+
+      "category_title": "Categories",
+      "category_classic": "Classic watches",
+      "category_business": "Business watches",
+      "category_sport": "Sport watches",
+      "category_premium": "Premium watches",
+
+      "bestsellers_title": "Bestsellers",
+      "new_title": "New arrivals",
+
+      "brand_title": "Our brand philosophy",
+      "brand_nature": "Precision and reliability in every detail",
+      "brand_look": "A modern view on watch design",
+      "brand_idea": "The idea behind the “Black” collection",
+
+      "is_new": "New",
+      "is_bestseller": "Bestseller",
+
+      "product_watch": "Wristwatch",
+
+      "color_violet": "Cartier Santos",
+      "color_orange": "Patek Philippe Calatrava",
+      "color_black": "Omega Speedmaster Professional"
+    },
+    "product": {
+      "available": "In stock",
+      "not_available": "Out of stock",
+      "vendor_code": "Reference",
+      "count": "Quantity",
+      "to_cart": "Add to cart",
+      "to_favorite": "Add to favorites",
+
+      "description": "Description",
+      "characteristics": "Specifications",
+
+      "collection_goods": "Watches from this collection",
+      "watched": "Recently viewed",
+
+      "add_to_favorites": "Add to favorites",
+      "add_to_comparison": "Add to comparison",
+      "quick_view": "Quick view",
+
+      "total_in_cart": "Total in cart",
+      "more": "More about this watch",
+
+      "mechanism": "Movement",
+      "case_material": "Case material",
+      "strap_material": "Strap material",
+      "glass_type": "Crystal",
+      "case_size": "Case size",
+      "dial_color": "Dial color",
+      "functions": "Functions",
+      "gender": "Gender",
+      "water_resistance": "Water resistance",
+
+      "in_cart": "Added",
+      "share": "Share"
     }
   },
   "ua": {
     "common": {
       "more": "Ще",
-      "order_price": "Вартість замовлення"
+      "order_price": "Вартість замовлення",
+      "ad": "Реклама",
+      "all_link": "Все"
     },
     "header": {
       "menu_btn": "Меню",
@@ -131,6 +199,70 @@
       "privacy": "Політика конфіденційності",
       "mobile_version": "Мобільна версія",
       "full_version": "Повна версія сайту"
+    },
+    "main_page": {
+      "hero_hidden_title": "Інтернет-магазин годинників RoyalTick",
+      "hero_title": "RoyalTick",
+      "hero_description": "Час має значення",
+      "hero_subtitle": "з новою колекцією «Line»",
+      "catalog_btn": "Каталог",
+
+      "category_title": "Категорії",
+      "category_classic": "Класичні годинники",
+      "category_business": "Ділові годинники",
+      "category_sport": "Спортивні годинники",
+      "category_premium": "Преміум годинники",
+
+      "bestsellers_title": "Хіти продажу",
+      "new_title": "Новинки",
+
+      "brand_title": "Філософія нашого бренду",
+      "brand_nature": "Точність і надійність у кожній деталі",
+      "brand_look": "Сучасний погляд на дизайн годинників",
+      "brand_idea": "Ідея колекції «Black»",
+
+      "is_new": "Новинка",
+      "is_bestseller": "Хіт продажу",
+
+      "product_watch": "Наручний годинник",
+
+      "color_violet": "Cartier Santos",
+      "color_orange": "Patek Philippe Calatrava",
+      "color_black": "Omega Speedmaster Professional"
+    },
+    "product": {
+      "available": "В наявності",
+      "not_available": "Немає в наявності",
+      "vendor_code": "Артикул",
+      "count": "Кількість",
+      "to_cart": "Додати в кошик",
+      "to_favorite": "Додати в обране",
+
+      "description": "Опис",
+      "characteristics": "Характеристики",
+
+      "collection_goods": "Годинники з цієї колекції",
+      "watched": "Ви переглядали",
+
+      "add_to_favorites": "Додати в обране",
+      "add_to_comparison": "Додати до порівняння",
+      "quick_view": "Швидкий перегляд",
+
+      "total_in_cart": "Разом у кошику",
+      "more": "Детальніше про годинник",
+
+      "mechanism": "Механізм",
+      "case_material": "Матеріал корпусу",
+      "strap_material": "Матеріал ремінця",
+      "glass_type": "Тип скла",
+      "case_size": "Розмір корпусу",
+      "dial_color": "Колір циферблату",
+      "functions": "Функції",
+      "gender": "Стать",
+      "water_resistance": "Водозахист",
+
+      "in_cart": "Додано",
+      "share": "Поділитися"
     }
   }
 }
