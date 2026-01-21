@@ -23,3 +23,21 @@ export interface IProduct {
   // Додаткове поле для можливих помилок
   errorMessage?: string
 }
+
+export interface IProductSize {
+  watchSizes?: {
+    [key in 38 | 40 | 42 | 44 | 46]?: boolean
+  }
+  strapWidths?: {
+    [key in 18 | 20 | 22 | 24]?: boolean
+  }
+  caseSize?: number // для годинників
+  width?: number // для ремінців
+  length?: number // для ремінців
+}
+
+export interface ISelectedSizes {
+  sizes: IProductSize
+  type: string
+  className?: string
+}

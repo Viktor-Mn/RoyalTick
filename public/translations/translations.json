@@ -104,6 +104,7 @@
       "count": "Quantity",
       "to_cart": "Add to cart",
       "to_favorite": "Add to favorites",
+      "size_table": "Size table",
 
       "description": "Description",
       "characteristics": "Specifications",
@@ -116,7 +117,7 @@
       "quick_view": "Quick view",
 
       "total_in_cart": "Total in cart",
-      "more": "More about this watch",
+      "more": "More about this product",
 
       "mechanism": "Movement",
       "case_material": "Case material",
@@ -130,6 +131,60 @@
 
       "in_cart": "Added",
       "share": "Share"
+    },
+    "catalog": {
+      "all_categories": "All categories",
+      "popular": "Popular",
+      "new": "New arrivals",
+      "cheap_first": "Price: low to high",
+      "expensive_first": "Price: high to low",
+      "material": "Material",
+      "clasp_type": "Clasp type",
+      "leather": "Leather",
+      "rubber": "Rubber",
+      "buckle": "Buckle",
+      "deployant": "Deployant clasp",
+      "folding": "Folding clasp",
+      "pin": "Pin buckle",
+      "width": "Width",
+      "length": "Length",
+
+      "categories": "Categories",
+      "sort": "Sort by",
+
+      "price": "Price",
+      "from": "From",
+      "to": "To",
+      "uah": "UAH",
+      "done": "Apply",
+
+      "brand": "Brand",
+      "mechanism": "Movement",
+      "quartz": "Quartz",
+      "mechanical": "Mechanical",
+      "automatic": "Automatic",
+
+      "caseMaterial": "Case material",
+      "steel": "Steel",
+      "plastic": "Plastic",
+      "titanium": "Titanium",
+      "strap_material": "Strap material",
+
+      "case_size": "Case size",
+      "gender": "Gender",
+      "men": "Men",
+      "women": "Women",
+      "unisex": "Unisex",
+
+      "collection": "Collection",
+
+      "filters": "Filters",
+      "found": "Found",
+      "nothing_found": "Nothing found",
+
+      "next_page": "Next page",
+      "previous_page": "Previous page",
+      "strap_size": "Strap size"
     }
   },
   "ua": {
@@ -237,6 +292,7 @@
       "count": "Кількість",
       "to_cart": "Додати в кошик",
       "to_favorite": "Додати в обране",
+      "size_table": "Таблиця розмірів",
 
       "description": "Опис",
       "characteristics": "Характеристики",
@@ -249,7 +305,7 @@
       "quick_view": "Швидкий перегляд",
 
       "total_in_cart": "Разом у кошику",
-      "more": "Детальніше про годинник",
+      "more": "Детальніше про товар",
 
       "mechanism": "Механізм",
       "case_material": "Матеріал корпусу",
@@ -263,6 +319,60 @@
 
       "in_cart": "Додано",
       "share": "Поділитися"
+    },
+    "catalog": {
+      "all_categories": "Усі категорії",
+      "popular": "Популярні",
+      "new": "Новинки",
+      "cheap_first": "Спочатку дешевші",
+      "expensive_first": "Спочатку дорожчі",
+      "material": "Матеріал",
+      "clasp_type": "Застібка",
+      "leather": "Шкіра",
+      "rubber": "Гума",
+      "strap_size": "Розмір ремінця",
+      "buckle": "Пряжка",
+      "deployant": "Кліпса (метелик)",
+      "folding": "Розкладна",
+      "pin": "Штифт",
+      "width": "Ширина",
+      "length": "Довжина",
+
+      "categories": "Категорії",
+      "sort": "Сортування",
+
+      "price": "Ціна",
+      "from": "Від",
+      "to": "До",
+      "uah": "грн",
+      "done": "Готово",
+
+      "brand": "Бренд",
+      "mechanism": "Механізм",
+      "quartz": "Кварцовий",
+      "mechanical": "Механічний",
+      "automatic": "Автоматичний",
+
+      "caseMaterial": "Матеріал корпусу",
+      "steel": "Сталь",
+      "plastic": "Пластик",
+      "titanium": "Титан",
+      "strap_material": "Матеріал ремінця",
+
+      "case_size": "Розмір корпусу",
+      "gender": "Стать",
+      "men": "Чоловічі",
+      "women": "Жіночі",
+      "unisex": "Унісекс",
+
+      "collection": "Колекція",
+
+      "filters": "Фільтри",
+      "found": "Знайдено",
+      "nothing_found": "Нічого не знайдено",
+
+      "next_page": "Наступна сторінка",
+      "previous_page": "Попередня сторінка"
     }
   }
 }

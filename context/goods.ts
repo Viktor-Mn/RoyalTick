@@ -1,11 +1,17 @@
 'use client'
 import { getBestsellerProductsFx, getNewProductsFx } from '@/api/main-page'
-import { createDomain, Effect, sample } from 'effector'
+import { IProduct } from '@/types/common'
+import { createDomain, Effect, forward, sample } from 'effector'
 import { createGate, Gate } from 'effector-react'
+import { loadOneProductFx } from '@/api/goods'
+import { ILoadOneProductFx } from '@/types/goods'
 
 const goods = createDomain()
 
 export const MainPageGate = createGate()
+
+export const setCurrentProduct = goods.createEvent<IProduct>()
+export const loadOneProduct = goods.createEvent<ILoadOneProductFx>()
 
 const goodsStoreInstance = (effect: Effect<void, [], Error>) =>
   goods
@@ -29,3 +35,13 @@ export const $bestsellerProducts = goodsStoreInstance(getBestsellerProductsFx)
 
 goodsSampleInstance(getNewProductsFx, MainPageGate)
 goodsSampleInstance(getBestsellerProductsFx, MainPageGate)
+
+export const $currentProduct = goods
+  .createStore<IProduct>({} as IProduct)
+  .on(setCurrentProduct, (_, product) => product)
+  .on(loadOneProductFx.done, (_, { result }) => result.productItem)
+
+sample({
+  clock: loadOneProduct,
+  to: loadOneProductFx,
+})

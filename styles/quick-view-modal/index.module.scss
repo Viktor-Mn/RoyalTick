@@ -1,0 +1,343 @@
+.modal {
+  width: 992px;
+  height: 568px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  background: #2a323f;
+  box-shadow:
+    0px 32px 32px 0px rgba(0, 0, 0, 0.2),
+    0px 0px 32px 0px rgba(0, 0, 0, 0.1);
+  display: flex;
+
+  @media (max-width: 1070px) {
+    width: 815px;
+  }
+
+  @media (max-width: 890px) {
+    width: 733px;
+  }
+
+  &__close {
+    height: 15px;
+    width: 15px;
+    z-index: 1;
+    position: absolute;
+    right: 32px;
+    top: 35px;
+    cursor: pointer;
+
+    &::before {
+      background-color: #e8e9ea;
+      content: '';
+      height: 100%;
+      width: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      transition: background-color 0.2s ease-in-out;
+      -webkit-mask: url(/img/close-small.svg) no-repeat 50% 50%;
+      mask: url(/img/close-small.svg) no-repeat 50% 50%;
+    }
+
+    &:hover::before {
+      background-color: #9466ff;
+    }
+  }
+
+  &__actions {
+    position: absolute;
+    top: 90px;
+    right: 32px;
+    display: flex;
+    align-items: center;
+
+    div {
+      button {
+        margin-bottom: 0 !important;
+      }
+
+      &:first-child {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  &__left {
+    max-width: 480px;
+    width: 100%;
+
+    @media (max-width: 1070px) {
+      max-width: 350px;
+    }
+
+    @media (max-width: 890px) {
+      max-width: 270px;
+    }
+
+    &__slider {
+      position: relative;
+      max-height: 480px;
+
+      &__slide {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        height: 480px;
+
+        img {
+          max-width: 100%;
+          max-height: 100%;
+          object-fit: contain;
+        }
+
+        &__arrow {
+          width: 32px;
+          height: 32px;
+          border-radius: 24px;
+          background-color: #3f4652 !important;
+          position: absolute;
+          bottom: -47px;
+          z-index: 2;
+          overflow: hidden;
+          transition: background-color 0.2s ease-in-out;
+          background-image: url(/img/slider-arrow.svg);
+          background-repeat: no-repeat;
+          background-position: center center;
+
+          &:hover {
+            background-color: #9466ff !important;
+          }
+        }
+
+        &__dots {
+          display: flex;
+          align-items: center;
+          position: absolute;
+          bottom: -40px;
+          left: 50%;
+          transform: translateX(-50%);
+
+          & li:not(:last-child) {
+            margin-right: 8px;
+          }
+
+          & li button {
+            position: relative;
+
+            svg {
+              display: block;
+              position: absolute;
+              top: 0;
+              left: 0;
+              fill: #797e8b;
+              transition: fill 0.2s ease-in-out;
+            }
+
+            &:hover svg {
+              fill: #e8e9ea;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &__right {
+    position: relative;
+    padding: 32px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    &__title {
+      margin: 0;
+      margin-bottom: 24px;
+      padding-right: 80px; // Місце для кнопок дій
+      color: #f1f3f5;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    &__price {
+      color: #16d9a6;
+      font-size: 24px;
+      font-weight: 500;
+      margin-bottom: 9px;
+    }
+
+    &__info {
+      flex-grow: 1;
+
+      &__strap {
+        margin-top: 15px;
+        margin-bottom: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      &__size {
+        margin-bottom: 28px;
+
+        &__inner {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 12px;
+        }
+      }
+
+      // Новий блок для вертикального списку розмірів
+      &__sizes_list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      // Рядок: Назва (Ширина) + Кнопка
+      &__size_row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      &__size_label {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.6);
+        min-width: 80px; // однаковий відступ для всіх кнопок
+      }
+
+      &__sizes {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap; // Дозволяє кнопкам переноситися на новий рядок, якщо їх багато
+        gap: 8px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        &__item {
+          position: relative;
+          min-width: 59px;
+          height: 32px;
+          border-radius: 24px;
+          background: rgba(255, 255, 255, 0.08); // Легкий фон за замовчуванням
+          transition: background-color 0.2s ease-in-out;
+
+          &:hover {
+            background-color: #9466ff !important;
+          }
+
+          & button {
+            color: rgba(255, 255, 255, 0.9);
+            width: 100%;
+            height: 100%;
+            font-size: 14px;
+            cursor: pointer;
+          }
+
+          &__not_available {
+            pointer-events: none;
+            background: rgba(255, 255, 255, 0.04);
+
+            & button {
+              color: rgba(255, 255, 255, 0.2);
+            }
+          }
+        }
+      }
+
+      &__sizes_btn {
+        margin-bottom: 0; // Скидаємо, бо тепер є gap
+      }
+    }
+
+    &__bottom {
+      margin-top: auto; // Притискає блок покупки до низу
+
+      &__inner {
+        display: flex;
+        align-items: center;
+        margin-top: 12px;
+      }
+
+      &__add {
+        border: none;
+        border-radius: 32px;
+        background-color: #9466ff !important;
+        padding: 12px 24px !important;
+        width: 164px;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+
+        &:hover {
+          background-color: #70f !important;
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          pointer-events: none;
+        }
+      }
+
+      &__counter {
+        margin-right: 24px;
+        width: 212px;
+      }
+    }
+
+    &__more {
+      padding: 12px 24px;
+      text-align: center;
+      margin-top: 20px;
+
+      &__link {
+        text-decoration: none;
+        color: #9466ff;
+        font-size: 16px;
+        font-weight: 500;
+        transition: color 0.2s ease-in-out;
+
+        &:hover {
+          color: #70f;
+        }
+      }
+    }
+  }
+}
+
+// Стилі для стрілок та точок (Slick slider)
+.modal__left__slider__slide__dot {
+  width: 6px;
+  height: 6px;
+  background-image: url(/img/gray-ellipse.svg);
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.prev {
+  left: 159px;
+  @media (max-width: 1070px) {
+    left: 100px;
+  }
+  @media (max-width: 890px) {
+    left: 63px;
+  }
+}
+
+.next {
+  right: 159px;
+  transform: rotate(180deg);
+  @media (max-width: 1070px) {
+    right: 100px;
+  }
+  @media (max-width: 890px) {
+    right: 63px;
+  }
+}
