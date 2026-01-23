@@ -185,6 +185,28 @@
       "next_page": "Next page",
       "previous_page": "Previous page",
       "strap_size": "Strap size"
+    },
+    "size_table": {
+      "title": "Watch Case Size Guide",
+      "case_size": "Case size",
+      "wrist_width": "Wrist width, mm",
+      "wrist_circumference": "Wrist circumference, cm",
+      "visual_fit": "Visual fit",
+      "strap_width": "Strap width, mm",
+      "small": "Small",
+      "medium": "Universal",
+      "large": "Bold",
+      "extra_large": "Large",
+      "apply_button": "Select {{size}} mm",
+      "disclaimer": "Visualization is approximate. Fit may vary!",
+      "strap_length": "Strap length, mm",
+      "clasp": "Clasp",
+      "strap_width_column": "Strap width, mm",
+      "wrist_circumference_cm": "Wrist circumference, cm",
+      "strap_length_selection": "Strap length selection (fits your wrist)",
+      "width_info": "Width info (compatibility)",
+      "matching_cases": "Compatible with cases",
+      "your_product": "(Your product)"
     }
   },
   "ua": {
@@ -373,6 +395,28 @@
 
       "next_page": "Наступна сторінка",
       "previous_page": "Попередня сторінка"
+    },
+    "size_table": {
+      "title": "Посібник з розмірів корпусу годинника",
+      "case_size": "Розмір корпусу",
+      "wrist_width": "Ширина зап’ястя, мм",
+      "wrist_circumference": "Обхват зап’ястя, см",
+      "visual_fit": "Візуальна посадка",
+      "strap_width": "Ширина ремінця, мм",
+      "small": "Малий",
+      "medium": "Універсальний",
+      "large": "Масивний",
+      "extra_large": "Великий",
+      "apply_button": "Вибрати {{size}} мм",
+      "disclaimer": "Візуалізація приблизна. Посадка може відрізнятись!",
+      "strap_length": "Довжина ремінця, мм",
+      "clasp": "Застібка",
+      "strap_width_column": "Ширина ремінця, мм",
+      "wrist_circumference_cm": "Обхват зап’ястя, см",
+      "strap_length_selection": "Вибір довжини (під руку)",
+      "width_info": "Довідка по ширині (сумісність)",
+      "matching_cases": "Підходить для корпусів",
+      "your_product": "(Ваш товар)"
     }
   }
 }
