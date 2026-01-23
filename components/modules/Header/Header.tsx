@@ -7,8 +7,9 @@ import { openMenu, openSearchModal } from '@/context/modals'
 import {
   addOverflowHiddenToBody,
   handleCloseSearchModal,
+  handleOpenAuthPopup,
 } from '@/lib/utils/common'
-import CartPopup from '../CartPopup/CartPopup'
+import CartPopup from './CartPopup/CartPopup'
 
 const Header = () => {
   const { lang, translations } = useLang()
@@ -53,13 +54,13 @@ const Header = () => {
             ></Link>
           </li>
           <li className='header__link-item'>
-            <CartPopup/>
+            <CartPopup />
           </li>
-          <li className='header__link-item'>
-            <Link
-              href='/profile'
-              className='header__links__item__btn header__links__item__btn--profile'
-            ></Link>
+          <li className='header__link-item header__links__item--profile'>
+            <button
+              className='btn-reset header__links__item__btn header__links__item__btn--profile'
+              onClick={handleOpenAuthPopup}
+            />
           </li>
         </ul>
       </div>

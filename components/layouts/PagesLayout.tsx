@@ -1,16 +1,23 @@
 'use client'
 import { useUnit } from 'effector-react'
-import { Toaster } from 'react-hot-toast'
-import { usePathname, useRouter } from 'next/navigation'
-import { $showQuickViewModal, $showSizeTable, closeQuickViewModal } from '@/context/modals'
+import {
+  $showQuickViewModal,
+  $showSizeTable,
+  closeQuickViewModal,
+} from '@/context/modals'
 import Layout from './Layout'
-import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
-import { closeSizeTableByCheck, removeOverflowHiddenFromBody } from '@/lib/utils/common'
+import {
+  closeSizeTableByCheck,
+  handleCloseAuthPopup,
+  removeOverflowHiddenFromBody,
+} from '@/lib/utils/common'
+import { $openAuthPopup } from '@/context/auth'
+
 
 const PagesLayout = ({ children }: { children: React.ReactNode }) => {
   const showQuickViewModal = useUnit($showQuickViewModal)
   const showSizeTable = useUnit($showSizeTable)
+  const openAuthPopup = useUnit($openAuthPopup)
 
   const handleCloseQuickViewModal = () => {
     removeOverflowHiddenFromBody()
@@ -30,6 +37,10 @@ const PagesLayout = ({ children }: { children: React.ReactNode }) => {
         <div
           className={`quick-view-modal-overlay ${showSizeTable ? 'overlay-active' : ''}`}
           onClick={handleCloseSizeTable}
+        />
+        <div
+          className={`auth-overlay ${openAuthPopup ? 'overlay-active' : ''}`}
+          onClick={handleCloseAuthPopup}
         />
       </body>
     </html>
