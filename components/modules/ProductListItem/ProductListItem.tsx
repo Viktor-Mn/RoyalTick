@@ -44,7 +44,6 @@ const ProductListItem = ({ item, title }: IProductsListItemProps) => {
                 src={item.images[0]}
                 alt={item.name}
                 fill
-                objectFit='contain'
               />
             </div>
             <p className={styles.list__item_ad__title}>
@@ -102,7 +101,6 @@ const ProductListItem = ({ item, title }: IProductsListItemProps) => {
               src={item.images[0]}
               alt={item.name}
               fill
-              objectFit='contain'
             />
           </Link>
           <div className={styles.list__item__inner}>

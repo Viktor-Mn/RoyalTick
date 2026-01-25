@@ -8,11 +8,25 @@ import {
   addOverflowHiddenToBody,
   handleCloseSearchModal,
   handleOpenAuthPopup,
+  triggerLoginCheck,
 } from '@/lib/utils/common'
 import CartPopup from './CartPopup/CartPopup'
+import HeaderProfile from './HeaderProfile'
+import { useUnit } from 'effector-react'
+import { $isAuth } from '@/context/auth'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { loginCheckFx } from '@/api/auth'
+import { useEffect } from 'react'
+import { $user } from '@/context/user'
 
 const Header = () => {
+  const isAuth = useUnit($isAuth)
+  const loginCheckSpinner = useUnit(loginCheckFx.pending)
   const { lang, translations } = useLang()
+  const user =useUnit($user)
+
+  console.log(user)
 
   const handleOpenMenu = () => {
     addOverflowHiddenToBody()
@@ -23,6 +37,10 @@ const Header = () => {
     openSearchModal()
     addOverflowHiddenToBody()
   }
+
+  useEffect(() => {
+    triggerLoginCheck()
+  }, [])
 
   return (
     <header className='header'>
@@ -57,10 +75,16 @@ const Header = () => {
             <CartPopup />
           </li>
           <li className='header__link-item header__links__item--profile'>
-            <button
-              className='btn-reset header__links__item__btn header__links__item__btn--profile'
-              onClick={handleOpenAuthPopup}
-            />
+            {isAuth ? (
+              <HeaderProfile />
+            ) : loginCheckSpinner ? (
+              <FontAwesomeIcon icon={faSpinner} spin />
+            ) : (
+              <button
+                className='btn-reset header__links__item__btn header__links__item__btn--profile'
+                onClick={handleOpenAuthPopup}
+              />
+            )}
           </li>
         </ul>
       </div>

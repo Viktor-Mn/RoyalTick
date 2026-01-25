@@ -1,3 +1,4 @@
+'use client'
 import Link from 'next/link'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -9,7 +10,7 @@ import { useLang } from '@/hooks/useLang'
 import AuthPopupSocials from './AuthPopupSocials'
 import { handleCloseAuthPopup } from '@/lib/utils/common'
 import { handleSignIn } from '@/context/auth'
-import { useAuthForm } from '@/hooks/useAuthForms'
+import { useAuthForm } from '@/hooks/useAuthForm'
 import { singInFx } from '@/api/auth'
 
 const AuthPopupLogin = ({ toggleAuth, isSideActive }: IAuthSideProps) => {
@@ -69,7 +70,6 @@ const AuthPopupLogin = ({ toggleAuth, isSideActive }: IAuthSideProps) => {
           </div>
         </form>
         <AuthPopupSocials handleSignupWithOAuth={handleSignupWithOAuth} />
-        
       </div>
     </div>
   )

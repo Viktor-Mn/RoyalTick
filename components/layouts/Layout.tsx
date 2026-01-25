@@ -10,13 +10,16 @@ import {
   $showSizeTable,
 } from '@/context/modals'
 import { useUnit } from 'effector-react'
-import { handleCloseSearchModal } from '@/lib/utils/common'
+import {
+  handleCloseAuthPopup,
+  handleCloseSearchModal,
+} from '@/lib/utils/common'
 import Footer from '../modules/Footer/Footer'
 import QuickViewModal from '../modules/QuickViewModal/QuickViewModal'
 import SizeTable from '../modules/SizeTable/SizeTable'
 import { $openAuthPopup } from '@/context/auth'
 import AuthPopup from '../modules/AuthPopup/AuthPopup'
-
+import { MutableRefObject, useRef } from 'react'
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const isMedia800 = useMediaQuery(800)
@@ -24,6 +27,17 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const showQuickViewModal = useUnit($showQuickViewModal)
   const showSizeTable = useUnit($showSizeTable)
   const openAuthPopup = useUnit($openAuthPopup)
+  const authWrapperRef = useRef<HTMLDivElement>(null)
+
+  const handleCloseAuthPopupByTarget = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    const target = e.target as Element
+
+    if (target === authWrapperRef.current) {
+      handleCloseAuthPopup()
+    }
+  }
 
   return (
     <>
@@ -38,6 +52,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             transition={{ duration: 0.3 }}
             exit={{ opacity: 0, scale: 0.5 }}
             className='auth-popup-wrapper'
+            onClick={handleCloseAuthPopupByTarget}
+            ref={authWrapperRef}
           >
             <AuthPopup />
           </motion.div>

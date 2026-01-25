@@ -1,5 +1,10 @@
-import { closeAuthPopup, openAuthPopup } from '@/context/auth'
-import { closeSearchModal, closeSizeTable, showQuickViewModal } from '@/context/modals'
+import { closeAuthPopup, openAuthPopup, setIsAuth } from '@/context/auth'
+import {
+  closeSearchModal,
+  closeSizeTable,
+  showQuickViewModal,
+} from '@/context/modals'
+import { loginCheck } from '@/context/user'
 
 export const removeOverflowHiddenFromBody = () => {
   const body = document.querySelector('body') as HTMLBodyElement
@@ -74,7 +79,7 @@ export const handleOpenAuthPopup = () => {
   openAuthPopup()
 }
 
-export const handleCloseAuthPopup = () =>{
+export const handleCloseAuthPopup = () => {
   removeOverflowHiddenFromBody()
   closeAuthPopup()
 }
@@ -83,7 +88,7 @@ export const closeAuthPopupWhenSomeModalOpened = (
   showQuickViewModal: boolean,
   showSizeTable: boolean
 ) => {
-  if(showQuickViewModal || showSizeTable){
+  if (showQuickViewModal || showSizeTable) {
     closeAuthPopup()
     return
   }
@@ -91,4 +96,23 @@ export const closeAuthPopupWhenSomeModalOpened = (
   handleCloseAuthPopup()
 }
 
+export const isUserAuth = () => {
+  const auth = JSON.parse(localStorage.getItem('auth') as string)
 
+  if (!auth?.accessToken) {
+    setIsAuth(false)
+    return false
+  }
+
+  return true
+}
+
+export const triggerLoginCheck = () => {
+  if (!isUserAuth()) {
+    return
+  }
+
+  const auth = JSON.parse(localStorage.getItem('auth') as string)
+
+  loginCheck({ jwt: auth.accessToken })
+}

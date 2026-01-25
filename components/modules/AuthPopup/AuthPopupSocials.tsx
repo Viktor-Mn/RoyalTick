@@ -9,39 +9,36 @@ import {
 const AuthPopupSocials = ({
   handleSignupWithOAuth,
 }: {
-  handleSignupWithOAuth: () => void
+  // Тепер приймаємо назву провайдера як рядок
+  handleSignupWithOAuth: (provider: string) => Promise<void>
 }) => (
   <div className='cart-body__socials'>
-    {/* GitHub */}
     <button
       className='btn-reset socials__btn gh-color'
-      onClick={handleSignupWithOAuth}
+      onClick={() => handleSignupWithOAuth('github')}
     >
-      <FontAwesomeIcon icon={faGithub} className='fa-flip' />
+      <FontAwesomeIcon icon={faGithub} />
     </button>
 
-    {/* Google */}
     <button
       className='btn-reset socials__btn g-color'
-      onClick={handleSignupWithOAuth}
+      onClick={() => handleSignupWithOAuth('google')}
     >
-      <FontAwesomeIcon icon={faGoogle} shake />
+      <FontAwesomeIcon icon={faGoogle} />
     </button>
 
-    {/* Twitter (X) */}
     <button
       className='btn-reset socials__btn x-color'
-      onClick={handleSignupWithOAuth}
+      onClick={() => handleSignupWithOAuth('twitter')}
     >
-      <FontAwesomeIcon icon={faXTwitter} bounce />
+      <FontAwesomeIcon icon={faXTwitter} />
     </button>
 
-    {/* Facebook */}
     <button
       className='btn-reset socials__btn fb-color'
-      onClick={handleSignupWithOAuth}
+      onClick={() => handleSignupWithOAuth('facebook')}
     >
-      <FontAwesomeIcon icon={faFacebook} beat />
+      <FontAwesomeIcon icon={faFacebook} />
     </button>
   </div>
 )

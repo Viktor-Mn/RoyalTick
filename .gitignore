@@ -119,3 +119,6 @@ test-results
 # ===============================
 *.tgz
 *.zip
+
+# clerk configuration (can include secrets)
+/.clerk/

@@ -12,7 +12,7 @@ import {
   removeOverflowHiddenFromBody,
 } from '@/lib/utils/common'
 import { $openAuthPopup } from '@/context/auth'
-
+import { Toaster } from 'react-hot-toast'
 
 const PagesLayout = ({ children }: { children: React.ReactNode }) => {
   const showQuickViewModal = useUnit($showQuickViewModal)
@@ -42,6 +42,7 @@ const PagesLayout = ({ children }: { children: React.ReactNode }) => {
           className={`auth-overlay ${openAuthPopup ? 'overlay-active' : ''}`}
           onClick={handleCloseAuthPopup}
         />
+        <Toaster position='top-center' reverseOrder={false} />
       </body>
     </html>
   )
