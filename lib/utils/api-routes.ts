@@ -2,6 +2,7 @@ import { Db, MongoClient } from 'mongodb'
 import jwt, { VerifyErrors } from 'jsonwebtoken'
 import { shuffle } from './common'
 import bcrypt from 'bcryptjs'
+import { NextResponse } from 'next/server'
 
 export const getDbAndReqBody = async (
   clientPromise: Promise<MongoClient>,
@@ -21,26 +22,32 @@ export const getNewAndBestsellerGoods = async (
   db: Db,
   fieldName: 'isBestseller' | 'isNew'
 ) => {
-  // Випадкові 2 годинники
-  const watches = await db
-    .collection('watches')
-    .aggregate([
-      { $match: { [fieldName]: true, inStock: { $gt: 0 } } },
-      { $sample: { size: 2 } },
-    ])
-    .toArray()
+  // Налаштовуємо кількість елементів з кожної колекції
+  const collectionsConfig = [
+    { name: 'watches', size: 4 },
+    { name: 'straps', size: 2 },
+    { name: 'boxes', size: 2 }, // Наші нові коробки
+  ]
 
-  // Випадкові 2 ремені
-  const straps = await db
-    .collection('straps')
-    .aggregate([
-      { $match: { [fieldName]: true, inStock: { $gt: 0 } } },
-      { $sample: { size: 2 } },
-    ])
-    .toArray()
+  const results = await Promise.all(
+    collectionsConfig.map(async (collection) =>
+      db
+        .collection(collection.name)
+        .aggregate([
+          {
+            $match: {
+              [fieldName]: true,
+              inStock: { $gt: 0 },
+            },
+          },
+          { $sample: { size: collection.size } },
+        ])
+        .toArray()
+    )
+  )
 
-  // Об’єднуємо і додаємо додаткове перетасування
-  return shuffle([...watches, ...straps])
+  // Об’єднуємо всі масиви (flat) і перетасовуємо функцією shuffle
+  return shuffle(results.flat())
 }
 
 export const generateTokens = (name: string, email: string) => {
@@ -147,3 +154,27 @@ export const isValidAccessToken = async (token: string | undefined) => {
 
 export const parseJwt = (token: string) =>
   JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString())
+
+export const getDataFromDBByCollection = async (
+  clientPromise: Promise<MongoClient>,
+  req: Request,
+  collection: string
+) => {
+  const { db, validatedTokenResult, token } = await getAuthRouteData(
+    clientPromise,
+    req,
+    false
+  )
+
+  if (validatedTokenResult.status !== 200) {
+    return NextResponse.json(validatedTokenResult)
+  }
+
+  const user = await findUserByEmail(db, parseJwt(token as string).email)
+  const items = await db
+    .collection(collection)
+    .find({ userId: user?._id })
+    .toArray()
+
+  return NextResponse.json(items)
+}

@@ -19,14 +19,16 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { loginCheckFx } from '@/api/auth'
 import { useEffect } from 'react'
 import { $user } from '@/context/user'
+import { useCartByAuth } from '@/hooks/useCartByAuth'
 
 const Header = () => {
   const isAuth = useUnit($isAuth)
   const loginCheckSpinner = useUnit(loginCheckFx.pending)
   const { lang, translations } = useLang()
   const user =useUnit($user)
+  const currentCartByAuth = useCartByAuth()
 
-  console.log(user)
+  console.log(currentCartByAuth)
 
   const handleOpenMenu = () => {
     addOverflowHiddenToBody()
@@ -39,6 +41,7 @@ const Header = () => {
   }
 
   useEffect(() => {
+    const cart = JSON.parse(localStorage.getItem('cart') as string)
     triggerLoginCheck()
   }, [])
 

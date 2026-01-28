@@ -1,5 +1,7 @@
 import { loginCheckFx, refreshToken } from '@/api/auth'
+import { addProductToCartFx, getCartItemsFx } from '@/api/cart'
 import { JWTError } from '@/constants/jwt'
+import { IAddProductToCartFx } from '@/types/cart'
 
 export const handleJWTError = async (
   errorName: string,
@@ -13,9 +15,18 @@ export const handleJWTError = async (
     const newTokens = await refreshToken({ jwt: auth.refreshToken})
 
     if (repeatRequestAfterRefreshData) {
-      const { repeatRequestMethodName} = repeatRequestAfterRefreshData
+      const { repeatRequestMethodName, payload} = repeatRequestAfterRefreshData
 
       switch (repeatRequestMethodName) {
+        case 'getCartItemsFx':
+          return getCartItemsFx({
+            jwt: newTokens.accessToken
+          })
+        case 'addProductToCartFx':
+          return addProductToCartFx({
+            ...(payload as IAddProductToCartFx),
+            jwt: newTokens.accessToken
+          })
         case 'loginCheckFx':
           await loginCheckFx({
             jwt: newTokens.accessToken,

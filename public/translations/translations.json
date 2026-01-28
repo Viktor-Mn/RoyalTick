@@ -100,6 +100,7 @@
       "color_black": "Omega Speedmaster Professional"
     },
     "product": {
+      "select_size": "Select size",
       "available": "In stock",
       "not_available": "Out of stock",
       "vendor_code": "Reference",
@@ -186,7 +187,13 @@
 
       "next_page": "Next page",
       "previous_page": "Previous page",
-      "strap_size": "Strap size"
+      "strap_size": "Strap size",
+
+      "capacity": "Capacity",
+      "wood": "Wood",
+      "leatherette": "Leatherette",
+      "velvet": "Velvet",
+      "carbon fiber": "Carbon fiber"
     },
     "size_table": {
       "title": "Watch Case Size Guide",
@@ -338,6 +345,7 @@
       "color_black": "Omega Speedmaster Professional"
     },
     "product": {
+      "select_size": "Оберіть розмір",
       "available": "В наявності",
       "not_available": "Немає в наявності",
       "vendor_code": "Артикул",
@@ -424,7 +432,12 @@
       "nothing_found": "Нічого не знайдено",
 
       "next_page": "Наступна сторінка",
-      "previous_page": "Попередня сторінка"
+      "previous_page": "Попередня сторінка",
+      "capacity": "Місткість",
+      "wood": "Дерево",
+      "leatherette": "Шкірозамінник",
+      "velvet": "Оксамит",
+      "carbon fiber": "Карбон"
     },
     "size_table": {
       "title": "Посібник з розмірів корпусу годинника",

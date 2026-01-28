@@ -3,7 +3,7 @@ import { IProductsListItemProps } from '@/types/modules'
 import Link from 'next/link'
 import ProductSubtitle from '@/components/elements/ProductSubtitle/ProductSubtitle'
 import Image from 'next/image'
-import { addOverflowHiddenToBody, formatPrice } from '@/lib/utils/common'
+import { addOverflowHiddenToBody, formatPrice, isItemInList } from '@/lib/utils/common'
 import styles from '@/styles/product-list-item/index.module.scss'
 import stylesForAd from '@/styles/ad/index.module.scss'
 import ProductLabel from './ProductLable'
@@ -12,17 +12,28 @@ import ProductAvailable from '@/components/elements/ProductAvailable/ProductAvai
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { showQuickViewModal } from '@/context/modals'
 import { setCurrentProduct } from '@/context/goods'
+import { productsWithoutSizes } from '@/constants/product'
+import { useCartAction } from '@/hooks/useCartAction'
+import { addProductToCartBySizeTable } from '@/lib/utils/cart'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 const ProductListItem = ({ item, title }: IProductsListItemProps) => {
   const { lang, translations } = useLang()
   const iseMedia800 = useMediaQuery(800)
   const isTitleForNew = title === translations[lang].main_page.new_title
+  const { addToCartSpinner, setAddToCartSpinner, currentCartByAuth } =
+    useCartAction()
+  const isProductInCart = isItemInList(currentCartByAuth, item._id)
 
   const handleShowQuickViewModal = () => {
     addOverflowHiddenToBody()
     showQuickViewModal()
     setCurrentProduct(item)
   }
+
+  const addToCart = () =>
+    addProductToCartBySizeTable(item, setAddToCartSpinner, 1)
 
   return (
     <>
@@ -40,11 +51,7 @@ const ProductListItem = ({ item, title }: IProductsListItemProps) => {
               subtitleRectClassName={styles.list__item_ad__subtitle__rect}
             />
             <div className={styles.list__item_ad__img}>
-              <Image
-                src={item.images[0]}
-                alt={item.name}
-                fill
-              />
+              <Image src={item.images[0]} alt={item.name} fill />
             </div>
             <p className={styles.list__item_ad__title}>
               <span>
@@ -97,11 +104,7 @@ const ProductListItem = ({ item, title }: IProductsListItemProps) => {
             href={`/catalog/${item.category}/${item._id}`}
             className={styles.list__item__img}
           >
-            <Image
-              src={item.images[0]}
-              alt={item.name}
-              fill
-            />
+            <Image src={item.images[0]} alt={item.name} fill />
           </Link>
           <div className={styles.list__item__inner}>
             <h3 className={styles.list__item__title}>
@@ -117,9 +120,29 @@ const ProductListItem = ({ item, title }: IProductsListItemProps) => {
               {formatPrice(+item.price)} ₴
             </span>
           </div>
-          <button className={`btn-reset ${styles.list__item__cart}`}>
-            {translations[lang].product.to_cart}
-          </button>
+          {productsWithoutSizes.includes(item.type) ? (
+            <button
+              onClick={addToCart}
+              className={`btn-reset ${styles.list__item__cart} ${isProductInCart ? styles.list__item__cart_added : ''}`}
+              disabled={addToCartSpinner}
+              style={addToCartSpinner ? {minWidth: 125, height: 48} : {}}
+            >
+              {addToCartSpinner ? (
+                <FontAwesomeIcon icon={faSpinner} spin color='#fff' />
+              ) : isProductInCart ? (
+                translations[lang].product.in_cart
+              ) : (
+                translations[lang].product.to_cart
+              )}
+            </button>
+          ) : (
+            <button
+              className={`btn-reset ${styles.list__item__cart}`}
+              onClick={addToCart}
+            >
+              {translations[lang].product.to_cart}
+            </button>
+          )}
         </li>
       )}
     </>

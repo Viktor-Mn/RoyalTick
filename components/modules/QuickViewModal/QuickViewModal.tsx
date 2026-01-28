@@ -21,13 +21,12 @@ const QuickViewModal = () => {
   const { product, selectedSize, setSelectedSize } = useCartAction()
   const images = useProductImages(product)
 
-  // Отримуємо дані з характеристик, бо міграція записує їх туди
   const char = product.characteristics || {}
   const isWatch = product.category === 'watches'
   const isStrap = product.category === 'straps'
+  const isBox = product.type === 'boxes'
   const WATCH_SIZES = [38, 40, 42, 44, 46]
 
-  // Визначаємо наявність розмірів
   const hasWatchSize = isWatch && char.caseSize !== undefined
   const hasStrapSize =
     isStrap && char.width !== undefined && char.length !== undefined
@@ -69,24 +68,26 @@ const QuickViewModal = () => {
             inStock={+product.inStock}
           />
 
-          {/* Відображаємо механізм ТІЛЬКИ для годинників */}
-          {isWatch && char.mechanism && (
-            <ProductMechanism
-              mechanism={
-                Array.isArray(char.mechanism)
-                  ? char.mechanism.join(', ')
-                  : char.mechanism
-              }
-            />
+          {/* Характеристики для ГОДИННИКІВ */}
+          {isWatch && (
+            <>
+              {char.mechanism && (
+                <ProductMechanism
+                  mechanism={
+                    Array.isArray(char.mechanism)
+                      ? char.mechanism.join(', ')
+                      : (char.mechanism as string)
+                  }
+                />
+              )}
+              {char.caseMaterial && (
+                <ProductCaseMaterial caseMaterial={String(char.caseMaterial)} />
+              )}
+            </>
           )}
 
-          {/* Відображаємо матеріал корпусу ТІЛЬКИ для годинників */}
-          {isWatch && char.caseMaterial && (
-            <ProductCaseMaterial caseMaterial={String(char.caseMaterial)} />
-          )}
-
-          {/* Відображаємо характеристики ТІЛЬКИ для ремінців */}
-          {isStrap && (
+          {/* Характеристики для РЕМІНЦІВ та КОРOБОК (спільний контейнер для матеріалів) */}
+          {(isStrap || isBox) && (
             <div className={styles.modal__right__info__strap}>
               {char.material && (
                 <div className={stylesForProduct.product__composition}>
@@ -95,7 +96,8 @@ const QuickViewModal = () => {
                     char.material}
                 </div>
               )}
-              {char.claspType && (
+              {/* Специфічне для ремінців */}
+              {isStrap && char.claspType && (
                 <div className={stylesForProduct.product__composition}>
                   {translations[lang].catalog.clasp_type}:{' '}
                   {(translations[lang].catalog as any)[
@@ -103,11 +105,16 @@ const QuickViewModal = () => {
                   ] || char.claspType}
                 </div>
               )}
+              {/* Специфічне для коробок */}
+              {isBox && char.capacity && (
+                <div className={stylesForProduct.product__composition}>
+                  {translations[lang].catalog.capacity}: {char.capacity}
+                </div>
+              )}
             </div>
           )}
 
-          {/* Блок розмірів */}
-          {/* Блок розмірів */}
+          {/* Блок розмірів (тільки для годинників та ремінців) */}
           {(hasWatchSize || hasStrapSize) && (
             <div className={styles.modal__right__info__size}>
               <div className={styles.modal__right__info__size__inner}>
@@ -130,7 +137,6 @@ const QuickViewModal = () => {
 
               <div className={styles.modal__right__info__sizes_list}>
                 {isWatch ? (
-                  /* ВАРІАНТ ДЛЯ ГОДИННИКІВ: Сітка розмірів 38-46 */
                   <div className={styles.modal__right__info__size_row}>
                     <ul
                       className={`list-reset ${styles.modal__right__info__sizes}`}
@@ -142,14 +148,12 @@ const QuickViewModal = () => {
                           selectedSize={selectedSize}
                           setSelectedSize={setSelectedSize}
                           currentCartItems={[]}
-                          // ТУТ ГОЛОВНА ПЕРЕВІРКА: чи є цей розмір у товарі
                           isInStock={char.caseSize === size}
                         />
                       ))}
                     </ul>
                   </div>
                 ) : (
-                  /* ВАРІАНТ ДЛЯ РЕМІНЦІВ: Ширина та Довжина окремо */
                   Object.entries({
                     width: char.width,
                     length: char.length,
@@ -172,7 +176,7 @@ const QuickViewModal = () => {
                           selectedSize={selectedSize}
                           setSelectedSize={setSelectedSize}
                           currentCartItems={[]}
-                          isInStock={true} // Для ремінців зазвичай доступне те, що прийшло
+                          isInStock={true}
                         />
                       </ul>
                     </div>
@@ -188,7 +192,8 @@ const QuickViewModal = () => {
               {translations[lang].product.count}
             </span>
             <div className={styles.modal__right__bottom__inner}>
-              {!!selectedSize ? (
+              {/* Для коробок лічильник активний завжди, для інших - після вибору розміру */}
+              {isBox || !!selectedSize ? (
                 <ProductCounter
                   className={`counter ${styles.modal__right__bottom__counter}`}
                   count={0}
@@ -196,9 +201,9 @@ const QuickViewModal = () => {
               ) : (
                 <div
                   className={`counter ${styles.modal__right__bottom__counter}`}
-                  style={{ justifyContent: 'center' }}
+                  style={{ justifyContent: 'center', fontSize: '12px' }}
                 >
-                  <span>{translations[lang].product.total_in_cart} 0</span>
+                  <span>{translations[lang].product.select_size}</span>
                 </div>
               )}
               <AddToCartBtn
