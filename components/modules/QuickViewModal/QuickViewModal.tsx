@@ -1,3 +1,4 @@
+'use client'
 import Link from 'next/link'
 import { closeQuickViewModal } from '@/context/modals'
 import { formatPrice, removeOverflowHiddenFromBody } from '@/lib/utils/common'
@@ -18,18 +19,22 @@ import ProductSizeTableBtn from '../ProductListItem/ProductSizeTableBtn'
 
 const QuickViewModal = () => {
   const { lang, translations } = useLang()
-  const { product, selectedSize, setSelectedSize } = useCartAction()
+  const {
+    product,
+    selectedSize,
+    setSelectedSize,
+    handleAddToCart,
+    addToCartSpinner,
+  } = useCartAction()
   const images = useProductImages(product)
 
   const char = product.characteristics || {}
   const isWatch = product.category === 'watches'
   const isStrap = product.category === 'straps'
   const isBox = product.type === 'boxes'
-  const WATCH_SIZES = [38, 40, 42, 44, 46]
 
-  const hasWatchSize = isWatch && char.caseSize !== undefined
-  const hasStrapSize =
-    isStrap && char.width !== undefined && char.length !== undefined
+  // Визначаємо наявність розмірів через об'єкт product.sizes
+  const hasSizes = product.sizes && Object.keys(product.sizes).length > 0
 
   const handleCloseModal = () => {
     removeOverflowHiddenFromBody()
@@ -68,7 +73,6 @@ const QuickViewModal = () => {
             inStock={+product.inStock}
           />
 
-          {/* Характеристики для ГОДИННИКІВ */}
           {isWatch && (
             <>
               {char.mechanism && (
@@ -86,7 +90,6 @@ const QuickViewModal = () => {
             </>
           )}
 
-          {/* Характеристики для РЕМІНЦІВ та КОРOБОК (спільний контейнер для матеріалів) */}
           {(isStrap || isBox) && (
             <div className={styles.modal__right__info__strap}>
               {char.material && (
@@ -96,7 +99,6 @@ const QuickViewModal = () => {
                     char.material}
                 </div>
               )}
-              {/* Специфічне для ремінців */}
               {isStrap && char.claspType && (
                 <div className={stylesForProduct.product__composition}>
                   {translations[lang].catalog.clasp_type}:{' '}
@@ -105,98 +107,54 @@ const QuickViewModal = () => {
                   ] || char.claspType}
                 </div>
               )}
-              {/* Специфічне для коробок */}
-              {isBox && char.capacity && (
-                <div className={stylesForProduct.product__composition}>
-                  {translations[lang].catalog.capacity}: {char.capacity}
-                </div>
-              )}
             </div>
           )}
 
-          {/* Блок розмірів (тільки для годинників та ремінців) */}
-          {(hasWatchSize || hasStrapSize) && (
+          {hasSizes && (
             <div className={styles.modal__right__info__size}>
               <div className={styles.modal__right__info__size__inner}>
                 <span className={stylesForProduct.product__size_title}>
+                  {/* ВИПРАВЛЕНО: Використовуємо існуючі ключі перекладу */}
                   {isWatch
                     ? translations[lang].catalog.case_size
                     : translations[lang].catalog.strap_size}
                 </span>
 
                 <ProductSizeTableBtn
-                  sizes={{
-                    caseSize: char.caseSize as number,
-                    width: char.width as number,
-                    length: char.length as number,
-                  }}
+                  sizes={product.sizes}
                   type={product.category}
                   className={`sizes-table-btn ${styles.modal__right__info__sizes_btn}`}
                 />
               </div>
 
               <div className={styles.modal__right__info__sizes_list}>
-                {isWatch ? (
-                  <div className={styles.modal__right__info__size_row}>
-                    <ul
-                      className={`list-reset ${styles.modal__right__info__sizes}`}
-                    >
-                      {WATCH_SIZES.map((size) => (
-                        <ProductSizesItem
-                          key={size}
-                          currentSize={['caseSize', size]}
-                          selectedSize={selectedSize}
-                          setSelectedSize={setSelectedSize}
-                          currentCartItems={[]}
-                          isInStock={char.caseSize === size}
-                        />
-                      ))}
-                    </ul>
-                  </div>
-                ) : (
-                  Object.entries({
-                    width: char.width,
-                    length: char.length,
-                  }).map(([key, value], i) => (
-                    <div
-                      key={i}
-                      className={styles.modal__right__info__size_row}
-                    >
-                      <span className={styles.modal__right__info__size_label}>
-                        {key === 'width'
-                          ? translations[lang].catalog.width
-                          : translations[lang].catalog.length}
-                        :
-                      </span>
-                      <ul
-                        className={`list-reset ${styles.modal__right__info__sizes}`}
-                      >
-                        <ProductSizesItem
-                          currentSize={[key, value as number]}
-                          selectedSize={selectedSize}
-                          setSelectedSize={setSelectedSize}
-                          currentCartItems={[]}
-                          isInStock={true}
-                        />
-                      </ul>
-                    </div>
-                  ))
-                )}
+                <ul
+                  className={`list-reset ${styles.modal__right__info__sizes}`}
+                >
+                  {Object.entries(product.sizes).map(([size, isInStock]) => (
+                    <ProductSizesItem
+                      key={size}
+                      currentSize={size} // Передаємо рядок, TS тепер це дозволяє
+                      selectedSize={selectedSize}
+                      setSelectedSize={setSelectedSize}
+                      currentCartItems={[]}
+                      isInStock={isInStock as boolean}
+                    />
+                  ))}
+                </ul>
               </div>
             </div>
           )}
 
-          {/* Керування кількістю та кошик */}
           <div className={styles.modal__right__bottom}>
             <span className={stylesForProduct.product__count_title}>
               {translations[lang].product.count}
             </span>
             <div className={styles.modal__right__bottom__inner}>
-              {/* Для коробок лічильник активний завжди, для інших - після вибору розміру */}
               {isBox || !!selectedSize ? (
                 <ProductCounter
                   className={`counter ${styles.modal__right__bottom__counter}`}
-                  count={0}
+                  count={1}
                 />
               ) : (
                 <div
@@ -209,6 +167,9 @@ const QuickViewModal = () => {
               <AddToCartBtn
                 className={styles.modal__right__bottom__add}
                 text={translations[lang].product.to_cart}
+                handleAddToCart={handleAddToCart}
+                addToCartSpinner={addToCartSpinner}
+                btnDisabled={!isBox && !selectedSize}
               />
             </div>
           </div>

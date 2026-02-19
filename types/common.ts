@@ -1,43 +1,36 @@
 export interface IProduct {
   _id: string
-  type: string // головний тип товару, напр. "watches" або "straps"
-  category: string // категорія для фільтрів, напр. "watches", "straps"
-  collection: string // підтип / колекція
+  type: string
+  category: string
+  collection: string
   price: number
   name: string
   description: string
   characteristics: {
-    [key: string]: string | number | boolean | string[]
-  } // напр. material, color, strapType, caseSize, dialColor, etc.
+    [key: string]: string | number | boolean | string[] | number[]
+  }
   images: string[]
   vendorCode: string
   inStock: number
   isBestseller: boolean
   isNew: boolean
   popularity: number
-  // Для годинників: розмір циферблату
-  caseSize?: number
-  // Для ремінців: ширина та довжина
-  width?: number
-  length?: number
-  // Додаткове поле для можливих помилок
+  sizes: ISizes
   errorMessage?: string
 }
 
-export interface IProductSize {
-  watchSizes?: {
-    [key in 38 | 40 | 42 | 44 | 46]?: boolean
-  }
-  strapWidths?: {
-    [key in 18 | 20 | 22 | 24]?: boolean
-  }
-  caseSize?: number // для годинників
-  width?: number // для ремінців
-  length?: number // для ремінців
+export interface ISizes {
+  [key: string]: boolean
 }
 
 export interface ISelectedSizes {
-  sizes: IProductSize
+  sizes: ISizes
   type: string
   className?: string
+}
+
+export interface IBaseEffectProps{
+  jwt: string
+  id: string
+  setSpinner: (arg0: boolean) => void
 }

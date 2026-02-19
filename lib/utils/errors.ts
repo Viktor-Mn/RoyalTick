@@ -1,7 +1,8 @@
 import { loginCheckFx, refreshToken } from '@/api/auth'
 import { addProductToCartFx, getCartItemsFx } from '@/api/cart'
 import { JWTError } from '@/constants/jwt'
-import { IAddProductToCartFx } from '@/types/cart'
+import { addProductsFromLSToCartFx } from '@/context/cart'
+import { IAddProductsFromLSToCartFx, IAddProductToCartFx } from '@/types/cart'
 
 export const handleJWTError = async (
   errorName: string,
@@ -12,20 +13,25 @@ export const handleJWTError = async (
 ) => {
   if (errorName === JWTError.EXPIRED_JWT_TOKEN) {
     const auth = JSON.parse(localStorage.getItem('auth') as string)
-    const newTokens = await refreshToken({ jwt: auth.refreshToken})
+    const newTokens = await refreshToken({ jwt: auth.refreshToken })
 
     if (repeatRequestAfterRefreshData) {
-      const { repeatRequestMethodName, payload} = repeatRequestAfterRefreshData
+      const { repeatRequestMethodName, payload } = repeatRequestAfterRefreshData
 
       switch (repeatRequestMethodName) {
         case 'getCartItemsFx':
           return getCartItemsFx({
-            jwt: newTokens.accessToken
+            jwt: newTokens.accessToken,
           })
         case 'addProductToCartFx':
           return addProductToCartFx({
             ...(payload as IAddProductToCartFx),
-            jwt: newTokens.accessToken
+            jwt: newTokens.accessToken,
+          })
+        case 'addProductsFromLSToCartFx':
+          return addProductsFromLSToCartFx({
+            ...(payload as IAddProductsFromLSToCartFx),
+            jwt: newTokens.accessToken,
           })
         case 'loginCheckFx':
           await loginCheckFx({

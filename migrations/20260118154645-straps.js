@@ -11,16 +11,12 @@ const types = [
   'mesh bracelet',
 ]
 
-const collections = ['Classic', 'Premium', 'Sport', 'Casual', 'Urban']
-
-const materials = ['leather', 'rubber', 'steel', 'silicone', 'fabric']
 const colors = ['black', 'brown', 'blue', 'green', 'red', 'white', 'gray']
-const lengths = [18, 20, 22, 24] // см
+const lengths = [180, 200, 220, 240] // мм
 const widths = [18, 20, 22, 24] // мм
 const claspTypes = ['buckle', 'deployant', 'folding', 'pin']
 const textures = ['smooth', 'embossed', 'woven', 'stitched']
 const patterns = ['plain', 'patterned', 'stitch detail', 'perforated']
-const compatibleModels = ['Casio', 'Seiko', 'Orient', 'Citizen', 'Tissot']
 
 const images = [
   '/img/straps/strap-leather-1.png',
@@ -36,6 +32,7 @@ module.exports = {
       [...Array(50)].map(() => {
         const type = getRandomArrayValue(types)
 
+        // Характеристики тепер без окремих довжини і ширини
         const characteristics = [
           {
             type: 'leather strap',
@@ -45,8 +42,6 @@ module.exports = {
             texture: getRandomArrayValue(textures),
             pattern: getRandomArrayValue(patterns),
             waterResistant: faker.datatype.boolean(),
-            length: getRandomArrayValue(lengths),
-            width: getRandomArrayValue(widths),
           },
           {
             type: 'metal bracelet',
@@ -56,8 +51,6 @@ module.exports = {
             texture: getRandomArrayValue(textures),
             pattern: getRandomArrayValue(patterns),
             waterResistant: faker.datatype.boolean(),
-            length: getRandomArrayValue(lengths),
-            width: getRandomArrayValue(widths),
           },
           {
             type: 'rubber strap',
@@ -67,8 +60,6 @@ module.exports = {
             texture: getRandomArrayValue(textures),
             pattern: getRandomArrayValue(patterns),
             waterResistant: faker.datatype.boolean(),
-            length: getRandomArrayValue(lengths),
-            width: getRandomArrayValue(widths),
           },
           {
             type: 'nato strap',
@@ -78,8 +69,6 @@ module.exports = {
             texture: getRandomArrayValue(textures),
             pattern: getRandomArrayValue(patterns),
             waterResistant: faker.datatype.boolean(),
-            length: getRandomArrayValue(lengths),
-            width: getRandomArrayValue(widths),
           },
           {
             type: 'mesh bracelet',
@@ -89,8 +78,6 @@ module.exports = {
             texture: getRandomArrayValue(textures),
             pattern: getRandomArrayValue(patterns),
             waterResistant: faker.datatype.boolean(),
-            length: getRandomArrayValue(lengths),
-            width: getRandomArrayValue(widths),
           },
         ]
 
@@ -111,6 +98,14 @@ module.exports = {
           isBestseller: faker.datatype.boolean(),
           isNew: faker.datatype.boolean(),
           popularity: +faker.string.numeric(3),
+          sizes: {
+            '180 / 18': faker.datatype.boolean(),
+            '200 / 20': faker.datatype.boolean(),
+            '220 / 22': faker.datatype.boolean(),
+            '240 / 24': faker.datatype.boolean(),
+          },
+          createdAt: new Date(),
+          updatedAt: new Date(),
         }
       })
     )

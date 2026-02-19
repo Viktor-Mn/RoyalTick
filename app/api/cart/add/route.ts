@@ -14,7 +14,7 @@ export async function POST(req: Request) {
       return NextResponse.json(validatedTokenResult)
     }
 
-    if (Object.keys(reqBody).length < 5) {
+    if (Object.keys(reqBody).length < 4) {
       return NextResponse.json({
         message: 'Not all fields passed',
         status: 404,
@@ -34,8 +34,11 @@ export async function POST(req: Request) {
     const user = await db
       .collection('users')
       .findOne({ email: parseJwt(token as string).email })
+
+    const collectionName =
+      reqBody.category === 'accessories' ? 'boxes' : reqBody.category
     const productItem = await db
-      .collection(reqBody.category)
+      .collection(collectionName)
       .findOne({ _id: new ObjectId(reqBody.productId) })
 
     if (!productItem) {
@@ -53,14 +56,18 @@ export async function POST(req: Request) {
       category: productItem.category,
       count: reqBody.count,
       price: productItem.price,
-      totalPrice: productItem.price,
+      totalPrice: productItem.price * reqBody.count,
       inStock: productItem.inStock,
       clientId: reqBody.clientId,
       material: productItem.characteristics?.material || '',
+      // ВИПРАВЛЕННЯ: беремо розмір з запиту (reqBody)
       size:
-        productItem.category === 'straps'
-          ? `${productItem.characteristics?.width || ''} / ${productItem.characteristics?.length || ''}`
-          : `${productItem.characteristics?.caseSize || ''}`,
+        reqBody.size ||
+        (productItem.characteristics
+          ? productItem.category === 'straps'
+            ? `${productItem.characteristics.width} / ${productItem.characteristics.length}`
+            : `${productItem.characteristics.caseSize}`
+          : ''),
     }
 
     const { insertedId } = await db.collection('cart').insertOne(newCartItem)

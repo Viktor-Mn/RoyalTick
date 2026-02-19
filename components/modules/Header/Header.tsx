@@ -20,12 +20,14 @@ import { loginCheckFx } from '@/api/auth'
 import { useEffect } from 'react'
 import { $user } from '@/context/user'
 import { useCartByAuth } from '@/hooks/useCartByAuth'
+import { addProductsFromLSToCartFx, setCartFromLS } from '@/context/cart'
+import { setLang } from '@/context/lang'
 
 const Header = () => {
   const isAuth = useUnit($isAuth)
   const loginCheckSpinner = useUnit(loginCheckFx.pending)
   const { lang, translations } = useLang()
-  const user =useUnit($user)
+  const user = useUnit($user)
   const currentCartByAuth = useCartByAuth()
 
   console.log(currentCartByAuth)
@@ -41,9 +43,34 @@ const Header = () => {
   }
 
   useEffect(() => {
+    const lang = JSON.parse(localStorage.getItem('lang') as string)
     const cart = JSON.parse(localStorage.getItem('cart') as string)
+
+    if (lang) {
+      if (lang === 'ua' || lang === 'en') {
+        setLang(lang)
+      }
+    }
+
+    if (cart) {
+      setCartFromLS(cart)
+    }
     triggerLoginCheck()
   }, [])
+
+  useEffect(() => {
+    if (isAuth) {
+      const auth = JSON.parse(localStorage.getItem('auth') as string)
+      const cartFromLS = JSON.parse(localStorage.getItem('cart') as string)
+
+      if (cartFromLS && Array.isArray(cartFromLS)) {
+        addProductsFromLSToCartFx({
+          jwt: auth.accessToken,
+          cartItems: cartFromLS,
+        })
+      }
+    }
+  }, [isAuth])
 
   return (
     <header className='header'>

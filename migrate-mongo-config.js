@@ -2,6 +2,7 @@
 require('dotenv').config()
 // In this file you can configure migrate-mongo
 
+
 const config = {
   mongodb: {
     // TODO Change (or review) the url to your MongoDB:

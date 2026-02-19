@@ -123,12 +123,11 @@ export const triggerLoginCheck = () => {
 }
 
 export const isItemInList = (array: ICartItem[], productId: string) =>
-  array.some((item) => item.productId === productId)
+  array.some((item) => String(item.productId) === String(productId))
 
 export const handleShowSizeTable = (product: IProduct) => {
   setCurrentProduct(product)
 
-  // Перетворюємо значення на числа, щоб уникнути помилки "string | number | boolean is not assignable to number"
   const sizesData =
     product.category === 'straps'
       ? {
@@ -147,3 +146,30 @@ export const handleShowSizeTable = (product: IProduct) => {
   addOverflowHiddenToBody()
   showSizeTable()
 }
+
+export const getCartItemCountBySize = (
+  cartItems: ICartItem[],
+  currentSize: string
+) => {
+  const foundItem = cartItems.find((item) => {
+    if (!item.size || !currentSize) return false
+
+    // Очищуємо все: пробіли, регістр, одиниці виміру
+    const itemSize = String(item.size)
+      .toLowerCase()
+      .replace(/\s/g, '')
+      .replace('mm', '')
+    const targetSize = String(currentSize)
+      .toLowerCase()
+      .replace(/\s/g, '')
+      .replace('mm', '')
+
+    // РОЗКОМЕНТУЙ РЯДОК НИЖЧЕ, якщо лічильник не з'явиться — побачиш різницю в консолі
+    // console.log(`Cart item: "${itemSize}" | Table size: "${targetSize}"`)
+
+    return itemSize === targetSize
+  })
+
+  return foundItem ? Number(foundItem.count) : 0
+}
+

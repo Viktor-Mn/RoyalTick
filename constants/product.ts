@@ -1,1 +1,1 @@
-export const productsWithoutSizes = ['boxes']
+export const productsWithoutSizes = ['boxes', 'accessories']

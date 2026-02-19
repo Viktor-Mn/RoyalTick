@@ -12,7 +12,6 @@ const caseMaterials = ['steel', 'plastic', 'titanium']
 const strapMaterials = ['leather', 'rubber', 'steel']
 const caseColors = ['black', 'silver', 'gold', 'green', 'blue', 'white']
 const dialColors = ['black', 'white', 'blue', 'green', 'silver']
-const caseSizes = [38, 40, 42, 44]
 const functionsList = [
   'chronograph',
   'alarm',
@@ -51,7 +50,6 @@ module.exports = {
             strapMaterial: getRandomArrayValue(strapMaterials),
             caseColor: getRandomArrayValue(caseColors),
             dialColor: getRandomArrayValue(dialColors),
-            caseSize: getRandomArrayValue(caseSizes),
             functions: [
               ...new Set([
                 getRandomArrayValue(functionsList),
@@ -70,7 +68,6 @@ module.exports = {
             strapMaterial: getRandomArrayValue(strapMaterials),
             caseColor: getRandomArrayValue(caseColors),
             dialColor: getRandomArrayValue(dialColors),
-            caseSize: getRandomArrayValue(caseSizes),
             functions: [
               ...new Set([
                 getRandomArrayValue(functionsList),
@@ -89,7 +86,6 @@ module.exports = {
             strapMaterial: getRandomArrayValue(strapMaterials),
             caseColor: getRandomArrayValue(caseColors),
             dialColor: getRandomArrayValue(dialColors),
-            caseSize: getRandomArrayValue(caseSizes),
             functions: [
               ...new Set([
                 getRandomArrayValue(functionsList),
@@ -108,7 +104,6 @@ module.exports = {
             strapMaterial: getRandomArrayValue(strapMaterials),
             caseColor: getRandomArrayValue(caseColors),
             dialColor: getRandomArrayValue(dialColors),
-            caseSize: getRandomArrayValue(caseSizes),
             functions: [
               ...new Set([
                 getRandomArrayValue(functionsList),
@@ -144,6 +139,13 @@ module.exports = {
           isBestseller: faker.datatype.boolean(),
           isNew: faker.datatype.boolean(),
           popularity: +faker.string.numeric(3),
+          // ТУТ НОВА ЛОГІКА РОЗМІРІВ
+          sizes: {
+            38: faker.datatype.boolean(),
+            40: faker.datatype.boolean(),
+            42: faker.datatype.boolean(),
+            44: faker.datatype.boolean(),
+          },
           createdAt: new Date(),
           updatedAt: new Date(),
         }

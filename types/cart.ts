@@ -1,3 +1,5 @@
+import { IBaseEffectProps } from "./common"
+
 export interface ICartItem {
   _id: string
   clientId: string
@@ -5,22 +7,30 @@ export interface ICartItem {
   productId: string
   image: string
   name: string
+  size: string
   count: string | number
   price: string
   totalPrice: string
   inStock: string
   vendorCode: string
   material?: string
-  caseSize?: number
-  width?: number
 }
 
 export interface IAddProductToCartFx {
   productId: string
   category: string
-  vendorCode: string
-  count: string | number
+  size: string
+  count: number
   jwt: string
   clientId: string
   setSpinner: (arg0: boolean) => void
+}
+
+export interface IAddProductsFromLSToCartFx {
+  jwt: string
+  cartItems: ICartItem[]
+}
+
+export interface IUpdateCartItemCountFx extends IBaseEffectProps {
+  count: number
 }

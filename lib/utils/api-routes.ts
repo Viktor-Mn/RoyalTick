@@ -1,4 +1,4 @@
-import { Db, MongoClient } from 'mongodb'
+import { Db, MongoClient, ObjectId } from 'mongodb'
 import jwt, { VerifyErrors } from 'jsonwebtoken'
 import { shuffle } from './common'
 import bcrypt from 'bcryptjs'
@@ -75,7 +75,13 @@ export const generateTokens = (name: string, email: string) => {
 
 export const createUserAndGenerateTokens = async (
   db: Db,
-  reqBody: { name: string; password: string; email: string; isOAuth?: boolean, image?: string }
+  reqBody: {
+    name: string
+    password: string
+    email: string
+    isOAuth?: boolean
+    image?: string
+  }
 ) => {
   // Якщо це OAuth, не хешуємо пароль bcrypt-ом (або використовуємо UID як є)
   const passwordToSave = reqBody.isOAuth
@@ -103,19 +109,19 @@ export const createUserAndGenerateTokens = async (
 export const findUserByEmail = async (db: Db, email: string) =>
   db.collection('users').findOne({ email })
 
-export const getAuthRouteData = async(
+export const getAuthRouteData = async (
   clientPromise: Promise<MongoClient>,
   req: Request,
   withReqBody = true
 ) => {
-  const {db, reqBody} = await getDbAndReqBody(
+  const { db, reqBody } = await getDbAndReqBody(
     clientPromise,
     withReqBody ? req : null
   )
   const token = req.headers.get('authorization')?.split(' ')[1]
   const validatedTokenResult = await isValidAccessToken(token)
 
-  return {db, reqBody, validatedTokenResult, token}
+  return { db, reqBody, validatedTokenResult, token }
 }
 
 export const isValidAccessToken = async (token: string | undefined) => {
@@ -177,4 +183,52 @@ export const getDataFromDBByCollection = async (
     .toArray()
 
   return NextResponse.json(items)
+}
+
+export const replaceProductsInCollection = async (
+  clientPromise: Promise<MongoClient>,
+  req: Request,
+  collection: string
+) => {
+  const { db, validatedTokenResult, reqBody, token } = await getAuthRouteData(
+    clientPromise,
+    req
+  )
+
+  if (validatedTokenResult.status !== 200) {
+    return NextResponse.json(validatedTokenResult)
+  }
+
+  if (!reqBody.items) {
+    return NextResponse.json({
+      message: 'items fields is required',
+      status: 404,
+    })
+  }
+
+  const user = await db
+    .collection('users')
+    .findOne({ email: parseJwt(token as string).email })
+
+  const items = (reqBody.items as { productId: string }[]).map((item) => ({
+    userId: user?._id,
+    ...item,
+    productId: new ObjectId(item.productId),
+  }))
+
+  await db.collection(collection).deleteMany({ userId: user?._id })
+
+  if (!items.length) {
+    return NextResponse.json({
+      status: 201,
+      items: [],
+    })
+  }
+
+  await db.collection(collection).insertMany(items)
+
+  return NextResponse.json({
+    status: 201,
+    items,
+  })
 }
