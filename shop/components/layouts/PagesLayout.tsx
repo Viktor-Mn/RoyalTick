@@ -16,6 +16,7 @@ import { Toaster } from 'react-hot-toast'
 import { useEffect, useState } from 'react'
 import CookieAlert from '../modules/CookieAlert/CookieAlert'
 import { motion } from 'framer-motion'
+import { Next13ProgressBar } from 'next13-progressbar'
 
 const PagesLayout = ({ children }: { children: React.ReactNode }) => {
   const showQuickViewModal = useUnit($showQuickViewModal)
@@ -40,6 +41,7 @@ const PagesLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang='en'>
       <body>
+        <Next13ProgressBar height='4px' color='#9466FF' showOnShallow />
         <Layout>{children}</Layout>
         <div
           className={`quick-view-modal-overlay ${showQuickViewModal ? 'overlay-active' : ''}`}
