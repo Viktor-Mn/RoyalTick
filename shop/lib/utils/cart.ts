@@ -140,4 +140,3 @@ export const handleDeleteAllFromCart = (jwt: string) => {
 
   localStorage.setItem('cart', JSON.stringify([]))
 }
-
