@@ -4,19 +4,22 @@ import { IProductItemActionBtnProps } from '@/types/elements'
 import styles from '@/styles/product-item-action-btn/index.module.scss'
 import tooltipStyles from '@/styles/tooltip/index.module.scss'
 import Tooltip from '../Tooltip/Tooltip'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const ProductItemActionBtn = ({
   text,
   callback,
   iconClass,
   marginBottom,
+  spinner,
   withTooltip = true,
 }: IProductItemActionBtnProps) => {
   const [open, setOpen] = useState(false)
   const [tooltipLeft, setTooltipLeft] = useState(0)
   const showTooltip = () => setOpen(true)
   const hideTooltip = () => setOpen(false)
- const tooltipRef = useRef<HTMLDivElement | null>(null)
+  const tooltipRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     if (open && withTooltip && tooltipRef.current) {
@@ -31,8 +34,9 @@ const ProductItemActionBtn = ({
         onClick={callback}
         onMouseEnter={showTooltip}
         onMouseLeave={hideTooltip}
-        style={{ marginBottom: marginBottom || 16}}
+        style={{ marginBottom: marginBottom || 16 }}
       >
+        {spinner && <FontAwesomeIcon icon={faSpinner} spin color='#fff'/>}
       </button>
       {withTooltip && (
         <AnimatePresence>

@@ -19,20 +19,22 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { loginCheckFx } from '@/api/auth'
 import { useEffect } from 'react'
 import { $user } from '@/context/user'
-import { useCartByAuth } from '@/hooks/useCartByAuth'
 import {
+  $cart,
+  $cartFromLs,
   addProductsFromLSToCartFx,
   setCartFromLS,
   setShouldShowEmpty,
 } from '@/context/cart'
 import { setLang } from '@/context/lang'
+import { useGoodsByAuth } from '@/hooks/useGoodsByAuth'
 
 const Header = () => {
   const isAuth = useUnit($isAuth)
   const loginCheckSpinner = useUnit(loginCheckFx.pending)
   const { lang, translations } = useLang()
   const user = useUnit($user)
-  const currentCartByAuth = useCartByAuth()
+  const currentCartByAuth = useGoodsByAuth($cart, $cartFromLs)
 
   console.log(currentCartByAuth)
 

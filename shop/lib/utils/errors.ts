@@ -1,5 +1,6 @@
 import { loginCheckFx, refreshToken } from '@/api/auth'
 import { addProductToCartFx, deleteCartItemFx, getCartItemsFx } from '@/api/cart'
+import { addProductToFavoriteFx, getFavoriteItemsFx } from '@/api/favorites'
 import { JWTError } from '@/constants/jwt'
 import { addProductsFromLSToCartFx } from '@/context/cart'
 import { IAddProductsFromLSToCartFx, IAddProductToCartFx, IDeleteCartItemsFx } from '@/types/cart'
@@ -36,6 +37,15 @@ export const handleJWTError = async (
         case 'deleteCartItemFx':
           return deleteCartItemFx({
             ...(payload as IDeleteCartItemsFx),
+            jwt: newTokens.accessToken,
+          })
+        case 'getFavoriteItemsFx':
+          return getFavoriteItemsFx({
+            jwt: newTokens.accessToken,
+          })
+        case 'addProductToFavoriteFx':
+          return addProductToFavoriteFx({
+            ...(payload as Omit<IAddProductToCartFx, 'count'>),
             jwt: newTokens.accessToken,
           })
         case 'loginCheckFx':

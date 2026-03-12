@@ -1,19 +1,20 @@
 import React, { MutableRefObject, useRef, useState } from 'react'
 import { IOrderInfoBlock } from '@/types/modules'
-import { useCartByAuth } from '@/hooks/useCartByAuth'
 import styles from '@/styles/order-block/index.module.scss'
 import { useLang } from '@/hooks/useLang'
 import { useTotalPrice } from '@/hooks/useTotalPrice'
 import { formatPrice, showCountMessage } from '@/lib/utils/common'
 import { countWholeCartItemsAmount } from '@/lib/utils/cart'
 import Link from 'next/link'
+import { $cart, $cartFromLs } from '@/context/cart'
+import { useGoodsByAuth } from '@/hooks/useGoodsByAuth'
 
 const OrderInfoBlock = ({
   isCorrectPromotionalCode,
   isOrderPage,
 }: IOrderInfoBlock) => {
   const { lang, translations } = useLang()
-  const currentCartByAuth = useCartByAuth()
+  const currentCartByAuth = useGoodsByAuth($cart, $cartFromLs)
   const [isUserAgree, setIsUserAgree] = useState(false)
   const { animatedPrice } = useTotalPrice()
   const checkboxRef = useRef<HTMLInputElement>(null) as MutableRefObject<HTMLInputElement>

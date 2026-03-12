@@ -5,15 +5,27 @@ import { $sizeTableSizes } from '@/context/sizeTable'
 import { $showQuickViewModal } from '@/context/modals'
 import { useCartAction } from '@/hooks/useCartAction'
 import { useLang } from '@/hooks/useLang'
-import { closeSizeTableByCheck } from '@/lib/utils/common'
+import { closeSizeTableByCheck, isUserAuth } from '@/lib/utils/common'
 import AddToCartBtn from '../ProductListItem/AddToCartBtn'
 import ProductCountBySize from '../ProductListItem/ProductCountBySize'
 import styles from '@/styles/size-table/index.module.scss'
+import {
+  $favorites,
+  $favoritesFromLS,
+  $isAddToFavorites,
+  addProductToFavorites,
+} from '@/context/favorites'
+import { useGoodsByAuth } from '@/hooks/useGoodsByAuth'
+import { addFavoriteItemToLS } from '@/lib/utils/favorites'
+import toast from 'react-hot-toast'
+import { useFavoritesAction } from '@/hooks/useFavoritesAction'
 
 const SizeTable = () => {
   const { lang, translations } = useLang()
   const showQuickViewModal = useUnit($showQuickViewModal)
   const productSizes = useUnit($sizeTableSizes)
+  const isAddToFavorites = useUnit($isAddToFavorites)
+
   const {
     selectedSize,
     setSelectedSize,
@@ -25,10 +37,21 @@ const SizeTable = () => {
     updateCountSpinner,
   } = useCartAction(true)
 
-  // Локальний стейт для розблокування кнопки тільки після кліку користувача
+  const { addToFavoritesSpinner, setAddToFavoritesSpinner } =
+    useFavoritesAction(product)
+
+  const currentFavoritesByAuth = useGoodsByAuth($favorites, $favoritesFromLS)
+
+  const currentFavoriteItems = currentFavoritesByAuth.filter(
+    (item) => item.productId === product._id
+  )
+
   const [isSizeSelectedByUser, setIsSizeSelectedByUser] = useState(false)
 
   const isStrapsType = productSizes.type === 'straps'
+  const favoriteItemBySize = currentFavoriteItems.find(
+    (item) => item.size === selectedSize
+  )
   const handleCloseSizeTable = () => closeSizeTableByCheck(showQuickViewModal)
 
   const handleSelectSize = (size: string) => {
@@ -57,6 +80,8 @@ const SizeTable = () => {
     },
   })
 
+  const checkInFavorites = (size: string) => currentFavoriteItems.find((item) => item.size === size)
+
   const watchSizes = [
     {
       id: 1,
@@ -66,6 +91,7 @@ const SizeTable = () => {
       wristGirth: '16',
       visual: translations[lang].size_table.small,
       strapWidth: '16–18',
+      isInFavorites: checkInFavorites('38'),
     },
     {
       id: 2,
@@ -75,6 +101,7 @@ const SizeTable = () => {
       wristGirth: '16–17.5',
       visual: translations[lang].size_table.medium,
       strapWidth: '18–20',
+      isInFavorites: checkInFavorites('40'),
     },
     {
       id: 3,
@@ -84,6 +111,7 @@ const SizeTable = () => {
       wristGirth: '17.5–19',
       visual: translations[lang].size_table.large,
       strapWidth: '20–22',
+      isInFavorites: checkInFavorites('42'),
     },
     {
       id: 4,
@@ -93,6 +121,7 @@ const SizeTable = () => {
       wristGirth: '19–20',
       visual: translations[lang].size_table.extra_large,
       strapWidth: '22–24',
+      isInFavorites: checkInFavorites('44'),
     },
     {
       id: 5,
@@ -102,6 +131,7 @@ const SizeTable = () => {
       wristGirth: '20+',
       visual: translations[lang].size_table.extra_large,
       strapWidth: '24–26',
+      isInFavorites: checkInFavorites('46'),
     },
   ]
 
@@ -114,6 +144,31 @@ const SizeTable = () => {
       '220': '20+',
     }
     return girthMap[length.trim()] || '—'
+  }
+
+  const handleAddProductToFavorites = () => {
+    if (!isUserAuth()) {
+      addFavoriteItemToLS(product, selectedSize)
+      return
+    }
+
+    if (favoriteItemBySize) {
+      toast.success('Додано в обране!')
+      return
+    }
+
+    const auth = JSON.parse(localStorage.getItem('auth') as string)
+
+    const clientId = addFavoriteItemToLS(product, selectedSize, false)
+
+    addProductToFavorites({
+      jwt: auth.accessToken,
+      productId: product._id,
+      setSpinner: setAddToFavoritesSpinner,
+      size: selectedSize,
+      category: product.category,
+      clientId,
+    })
   }
 
   return (
@@ -154,7 +209,12 @@ const SizeTable = () => {
                         handleSelectSize(sizeKey)
                       )}
                     >
-                      <td>{length}</td>
+                      <td>
+                        {!!checkInFavorites(sizeKey) && (
+                          <span className={styles.size_table__favorite} />
+                        )}
+                        {length}
+                      </td>
                       <td>{width}</td>
                       <td>
                         <ProductCountBySize
@@ -193,7 +253,12 @@ const SizeTable = () => {
                       handleSelectSize(item.size)
                     )}
                   >
-                    <td>{item.caseSize}</td>
+                    <td>
+                      {item.isInFavorites && (
+                        <span className={styles.size_table__favorite} />
+                      )}
+                      {item.caseSize}
+                    </td>
                     <td>{item.wristWidth}</td>
                     <td>{item.wristGirth}</td>
                     <td>{item.visual}</td>
@@ -214,10 +279,23 @@ const SizeTable = () => {
 
       <AddToCartBtn
         className={styles.size_table__btn}
-        text={translations[lang].product.to_cart}
-        handleAddToCart={addToCart}
-        addToCartSpinner={addToCartSpinner || updateCountSpinner}
-        btnDisabled={!isSizeSelectedByUser || addToCartSpinner || updateCountSpinner}
+        text={
+          isAddToFavorites
+            ? translations[lang].product.to_favorite
+            : translations[lang].product.to_cart
+        }
+        handleAddToCart={
+          isAddToFavorites ? handleAddProductToFavorites : addToCart
+        }
+        addToCartSpinner={
+          addToCartSpinner || updateCountSpinner || addToFavoritesSpinner
+        }
+        btnDisabled={
+          !isSizeSelectedByUser ||
+          addToCartSpinner ||
+          updateCountSpinner ||
+          addToFavoritesSpinner
+        }
       />
     </div>
   )

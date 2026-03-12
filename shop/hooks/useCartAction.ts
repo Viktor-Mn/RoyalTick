@@ -1,19 +1,19 @@
 import { $currentProduct } from '@/context/goods'
 import { useUnit } from 'effector-react'
 import { useState, useEffect, useMemo } from 'react'
-import { useCartByAuth } from './useCartByAuth'
 import { isUserAuth } from '@/lib/utils/common'
 import {
   addCartItemToLS,
   addItemToCart,
   addProductToCartBySizeTable,
 } from '@/lib/utils/cart'
-import { updateCartItemCount } from '@/context/cart'
+import { $cart, $cartFromLs, updateCartItemCount } from '@/context/cart'
+import { useGoodsByAuth } from './useGoodsByAuth'
 
 export const useCartAction = (isSizeTable = false) => {
   const product = useUnit($currentProduct)
   const [selectedSize, setSelectedSize] = useState('')
-  const currentCartByAuth = useCartByAuth()
+  const currentCartByAuth = useGoodsByAuth($cart, $cartFromLs)
   const currentCartItems = currentCartByAuth.filter(
     (item) => String(item.productId) === String(product._id)
   )

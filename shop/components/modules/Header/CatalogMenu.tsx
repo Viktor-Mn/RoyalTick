@@ -18,10 +18,7 @@ const CatalogMenu = () => {
   const catalogMenuIsOpen = useUnit($catalogMenuIsOpen)
   const { lang, translations } = useLang()
 
-  const [showUserList, setShowUserList] = useState(false)
-  const [showTypeList, setShowTypeList] = useState(false)
-  const [showCollectionList, setShowCollectionList] = useState(false)
-  const [showStyleList, setShowStyleList] = useState(false)
+  const [activeListId, setActiveListId] = useState(0)
   const { itemVariants, sideVariants, popupZIndex } = useMenuAnimation(
     2,
     catalogMenuIsOpen
@@ -29,48 +26,20 @@ const CatalogMenu = () => {
 
   const isMedia450 = useMediaQuery(450)
 
-  const handleShowUserList = () => {
-    setShowUserList(true)
-    setShowTypeList(false)
-    setShowCollectionList(false)
-    setShowStyleList(false)
-  }
-
-  const handleShowTypeList = () => {
-    setShowUserList(false)
-    setShowTypeList(true)
-    setShowCollectionList(false)
-    setShowStyleList(false)
-  }
-
-  const handleShowCollectionList = () => {
-    setShowUserList(false)
-    setShowTypeList(false)
-    setShowCollectionList(true)
-    setShowStyleList(false)
-  }
-
-  const handleShowStyleList = () => {
-    setShowUserList(false)
-    setShowTypeList(false)
-    setShowCollectionList(false)
-    setShowStyleList(true)
-  }
 
   const handleCloseMenu = () => {
     removeOverflowHiddenFromBody()
     closeCatalogMenu()
-    setShowUserList(false)
-    setShowTypeList(false)
-    setShowCollectionList(false)
-    setShowStyleList(false)
+    setActiveListId(0)
   }
+
+  const isActiveList = (id: number) => activeListId === id
 
   const items = [
     {
       id: 1,
       name: translations[lang].main_menu.watches,
-      handler: handleShowUserList,
+      handler: () => setActiveListId(1),
       items: [
         {
           title: translations[lang].comparison.mens_watches,
@@ -93,7 +62,7 @@ const CatalogMenu = () => {
     {
       id: 2,
       name: translations[lang].main_menu.types,
-      handler: handleShowTypeList,
+      handler: () => setActiveListId(2),
       items: [
         {
           title: translations[lang].comparison.quartz_watches,
@@ -112,7 +81,7 @@ const CatalogMenu = () => {
     {
       id: 3,
       name: translations[lang].main_menu.collections,
-      handler: handleShowCollectionList,
+      handler: () => setActiveListId(3),
       items: [
         {
           title: translations[lang].comparison.luxury_watches,
@@ -127,7 +96,7 @@ const CatalogMenu = () => {
     {
       id: 4,
       name: translations[lang].main_menu.styles,
-      handler: handleShowStyleList,
+      handler: () => setActiveListId(4),
       items: [
         {
           title: translations[lang].comparison.sport_watches,
@@ -194,35 +163,35 @@ const CatalogMenu = () => {
                       {!isMedia450 && (
                         <>
                           {id === 1 && (
-                            <CatalogMenuButton {...buttonProps(showUserList)} />
+                            <CatalogMenuButton {...buttonProps(isActiveList(1))} />
                           )}
                           {id === 2 && (
-                            <CatalogMenuButton {...buttonProps(showTypeList)} />
+                            <CatalogMenuButton {...buttonProps(isActiveList(2))} />
                           )}
                           {id === 3 && (
                             <CatalogMenuButton
-                              {...buttonProps(showCollectionList)}
+                              {...buttonProps(isActiveList(3))}
                             />
                           )}
                           {id === 4 && (
                             <CatalogMenuButton
-                              {...buttonProps(showStyleList)}
+                              {...buttonProps(isActiveList(4))}
                             />
                           )}
                         </>
                       )}
                       {!isMedia450 && (
                         <AnimatePresence>
-                          {isCurrentList(showUserList, 1) && (
+                          {isCurrentList(isActiveList(1), 1) && (
                             <CatalogMenuList items={items} />
                           )}
-                          {isCurrentList(showTypeList, 2) && (
+                          {isCurrentList(isActiveList(2), 2) && (
                             <CatalogMenuList items={items} />
                           )}
-                          {isCurrentList(showCollectionList, 3) && (
+                          {isCurrentList(isActiveList(3), 3) && (
                             <CatalogMenuList items={items} />
                           )}
-                          {isCurrentList(showStyleList, 4) && (
+                          {isCurrentList(isActiveList(4), 4) && (
                             <CatalogMenuList items={items} />
                           )}
                         </AnimatePresence>

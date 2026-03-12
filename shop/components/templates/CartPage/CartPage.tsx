@@ -4,7 +4,6 @@ import { useBreadcrumbs } from '@/hooks/useBreadcrumbs'
 import { useLang } from '@/hooks/useLang'
 import styles from '@/styles/cart-page/index.module.scss'
 import Breadcrumbs from '@/components/modules/Breadcrumbs/Breadcrumbs'
-import { useCartByAuth } from '@/hooks/useCartByAuth'
 import HeadingWithCount from '@/components/elements/HeadingWithCount/HeadingWithCount'
 import { countWholeCartItemsAmount } from '@/lib/utils/cart'
 import cartSkeletonStyles from '@/styles/cart-skeleton/index.module.scss'
@@ -18,11 +17,12 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import PromotionalCode from '@/components/modules/CartPage/PromotionalCode'
 import { useState } from 'react'
 import EmptyPageContent from '@/components/modules/EmptyPageContent/EmptyPageContent'
-import { $shouldShowEmpty } from '@/context/cart'
+import { $cart, $cartFromLs, $shouldShowEmpty } from '@/context/cart'
+import { useGoodsByAuth } from '@/hooks/useGoodsByAuth'
 
 const CartPage = () => {
   const cartSpinner = useUnit(getCartItemsFx.pending)
-  const currentCartByAuth = useCartByAuth()
+  const currentCartByAuth = useGoodsByAuth($cart, $cartFromLs)
   const { lang, translations } = useLang()
   const { getDefaultTextGenerator, getTextGenerator } = useBreadcrumbs('cart')
   const isMedia930 = useMediaQuery(930)
