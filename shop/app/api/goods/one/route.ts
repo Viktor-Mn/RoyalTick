@@ -1,11 +1,11 @@
-import { ObjectId } from 'mongodb'
-import { NextResponse } from 'next/server'
 import clientPromise from '@/lib/mongodb'
 import { getDbAndReqBody } from '@/lib/utils/api-routes'
+import { ObjectId } from 'mongodb'
+import { NextResponse } from 'next/server'
 
-export async function GET(req: Request) {
+export async function POST(req: Request) {
   try {
-    const { db, reqBody } = await getDbAndReqBody(clientPromise, null)
+    const { db, reqBody } = await getDbAndReqBody(clientPromise, req)
     const isValidId = ObjectId.isValid(reqBody.productId)
 
     if (!isValidId) {
@@ -19,10 +19,7 @@ export async function GET(req: Request) {
       .collection(reqBody.category)
       .findOne({ _id: new ObjectId(reqBody.productId) })
 
-    return NextResponse.json({
-      status: 200,
-      productItem,
-    })
+    return NextResponse.json({ status: 200, productItem })
   } catch (error) {
     throw new Error((error as Error).message)
   }

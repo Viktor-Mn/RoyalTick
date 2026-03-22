@@ -12,10 +12,6 @@ export async function GET(req: Request) {
     const category = url.searchParams.get('category')
     const isValidId = ObjectId.isValid(id as string)
 
-    console.log('API ONE → ID:', id)
-    console.log('API ONE → CATEGORY:', category)
-    console.log('API ONE → VALID ID:', ObjectId.isValid(id as string))
-
     if (!isValidId) {
       return NextResponse.json(
         {

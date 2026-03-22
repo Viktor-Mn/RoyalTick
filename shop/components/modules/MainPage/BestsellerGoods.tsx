@@ -9,8 +9,6 @@ const BestsellerGoods = () => {
   const spinner = useUnit(getBestsellerProductsFx.pending)
   const { lang, translations } = useLang()
 
-  console.log('Bestseller goods from store:', goods)
-
   return (
     <MainPageSection
       title={translations[lang].main_page.bestsellers_title}

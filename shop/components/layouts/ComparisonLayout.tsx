@@ -18,37 +18,49 @@ import skeletonLinksStyles from '@/styles/comparison-links-skeleton/index.module
 import styles from '@/styles/comparison/index.module.scss'
 import skeletonListsStyles from '@/styles/comparison-list-skeleton/index.module.scss'
 import comparisonSkeleton from '@/styles/comparison-skeleton/index.module.scss'
+import { isUserAuth } from "@/lib/utils/common";
+import { loginCheckFx } from "@/context/user";
 
 const ComparisonLayout = ({ children }: { children: React.ReactNode }) => {
+    const [isMounted, setIsMounted] = useState(false)
     const [dynamicTitle, setDynamicTitle] = useState('')
     const { crumbText } = useCrumbText('comparison')
     const { lang, translations } = useLang()
     const { getDefaultTextGenerator, getTextGenerator } = useBreadcrumbs('comparison')
     const pathname = usePathname()
-    const breadcrumbs = document.querySelector('.breadcrumbs') as HTMLUListElement
     const currentComparisonByAuth = useGoodsByAuth($comparison, $comparisonFromLs)
     const { availableItemLinks, linksSpinner } = useComparisonLinks()
     const shouldShowEmptyComparison = useUnit($shouldShowEmptyComparison)
+    const loginCheckSpinner = useUnit(loginCheckFx.pending)
+    const mainSpinner = isUserAuth() ? linksSpinner || loginCheckSpinner : linksSpinner
+
+    useEffect(() => {
+        setIsMounted(true)
+    }, [])
+
+    const showSkeleton = !isMounted || mainSpinner
+    
 
     usePageTitle('comparison', dynamicTitle)
 
     useEffect(() => {
+        if (typeof window === 'undefined') return;
         const lastCrumb = document.querySelector('.last-crumb') as HTMLElement
+        if (!lastCrumb) return
 
-        if (lastCrumb) {
-            const productTypePathname = pathname.split('/comparison/')[1]
+        const productTypePathname = pathname.split('/comparison/')[1]
+        const text = productTypePathname
+            ? (translations[lang].comparison as { [index: string]: string })[productTypePathname]
+            : crumbText
 
-            if (!productTypePathname) {
-                setDynamicTitle('')
-                lastCrumb.textContent = crumbText
-                return
-            }
+        setDynamicTitle(text || '')
+        lastCrumb.textContent = text || crumbText
+    }, [crumbText, lang, pathname, translations])
 
-            const text = (translations[lang].comparison as { [index: string]: string })[productTypePathname]
-            setDynamicTitle(text)
-            lastCrumb.textContent = text
-        }
-    }, [breadcrumbs, crumbText, lang, pathname, translations])
+
+    if (!isMounted) {
+        return <div className="container"><Skeleton styles={skeletonLinksStyles} /></div>
+    }
 
     return (
         <main>
@@ -61,10 +73,10 @@ const ComparisonLayout = ({ children }: { children: React.ReactNode }) => {
                     <HeadingWithCount
                         count={currentComparisonByAuth.length}
                         title={translations[lang].comparison.main_heading}
-                        spinner={false}
+                        spinner={showSkeleton}
                     />
                     {!(pathname === '/comparison') &&
-                        (linksSpinner ? (
+                        (mainSpinner ? (
                             <Skeleton styles={skeletonLinksStyles} />
                         ) : (
                             <ComparisonLinksList
@@ -73,7 +85,7 @@ const ComparisonLayout = ({ children }: { children: React.ReactNode }) => {
                             />
                         ))}
                     <div>
-                        {linksSpinner ? (
+                        {mainSpinner ? (
                             pathname === '/comparison' ? (
                                 <Skeleton styles={comparisonSkeleton} />
                             ) : (

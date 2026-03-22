@@ -16,10 +16,8 @@ import { $isAuth } from '@/context/auth'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { useEffect } from 'react'
-import { $user, loginCheckFx } from '@/context/user'
+import { loginCheckFx } from '@/context/user'
 import {
-  $cart,
-  $cartFromLs,
   addProductsFromLSToCart,
   setCartFromLS,
   setShouldShowEmpty,
@@ -32,17 +30,14 @@ import {
   setFavoritesFromLS,
   setShouldShowEmptyFavorites,
 } from '@/context/favorites'
-import { addItemsFromLSToComparison, setComparisonFromLS, setShouldShowEmptyComparison } from '@/context/comparison'
+import { $comparison, $comparisonFromLs, addItemsFromLSToComparison, setComparisonFromLS, setShouldShowEmptyComparison } from '@/context/comparison'
 
 const Header = () => {
   const isAuth = useUnit($isAuth)
   const loginCheckSpinner = useUnit(loginCheckFx.pending)
   const { lang, translations } = useLang()
-  const user = useUnit($user)
-  const currentCartByAuth = useGoodsByAuth($cart, $cartFromLs)
   const currentFavoritesByAuth = useGoodsByAuth($favorites, $favoritesFromLS)
-
-  console.log(currentCartByAuth)
+  const currentComparisonByAuth = useGoodsByAuth($comparison, $comparisonFromLs)
 
   const handleOpenMenu = () => {
     addOverflowHiddenToBody()
@@ -174,7 +169,11 @@ const Header = () => {
             <Link
               href='/comparison'
               className='header__links__item__btn header__links__item__btn--compare'
-            ></Link>
+            >
+              {!!currentComparisonByAuth.length && (
+                <span className='not-empty' />
+              )}
+            </Link>
           </li>
           <li className='header__link-item'>
             <CartPopup />

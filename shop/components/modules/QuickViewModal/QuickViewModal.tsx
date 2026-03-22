@@ -17,6 +17,8 @@ import ProductCounter from '../ProductListItem/ProductCounter'
 import ProductSizesItem from '../ProductListItem/ProductSizesItem'
 import ProductSizeTableBtn from '../ProductListItem/ProductSizeTableBtn'
 import { ICartItem } from '@/types/cart'
+import { useComparisonAction } from '@/hooks/useComparisonAction'
+import { useFavoritesAction } from '@/hooks/useFavoritesAction'
 
 const QuickViewModal = () => {
   const { lang, translations } = useLang()
@@ -51,6 +53,18 @@ const QuickViewModal = () => {
     handleAddToCart(count)
   }
 
+  const {
+    handleAddToComparison,
+    isItemInComparison,
+    addToComparisonSpinner,
+  } = useComparisonAction(product)
+
+  const {
+    handleAddProductToFavorites,
+    addToFavoritesSpinner,
+    isProductInFavorites,
+  } = useFavoritesAction(product)
+
   return (
     <div className={styles.modal}>
       <button
@@ -59,14 +73,28 @@ const QuickViewModal = () => {
       />
       <div className={styles.modal__actions}>
         <ProductItemActionBtn
+          spinner={addToFavoritesSpinner}
           text={translations[lang].product.add_to_favorites}
-          iconClass='actions__btn_favorite'
+          iconClass={`${addToFavoritesSpinner
+              ? 'actions__btn_spinner'
+              : isProductInFavorites
+                ? 'actions__btn_favorite_checked'
+                : 'actions__btn_favorite'
+            }`}
           withTooltip={false}
+          callback={handleAddProductToFavorites}
         />
         <ProductItemActionBtn
+          spinner={addToComparisonSpinner}
           text={translations[lang].product.add_to_comparison}
-          iconClass='actions__btn_comparison'
+          iconClass={`${addToComparisonSpinner
+              ? 'actions__btn_spinner'
+              : isItemInComparison
+                ? 'actions__btn_comparison_checked'
+                : 'actions__btn_comparison'
+            }`}
           withTooltip={false}
+          callback={handleAddToComparison}
         />
       </div>
       <div className={styles.modal__left}>

@@ -8,9 +8,6 @@ const NewGoods = () => {
   const goods = useUnit($newProducts)
   const spinner = useUnit(getNewProductsFx.pending)
   const { lang, translations } = useLang()
-
-  console.log('New goods from store:', goods)
-
   return (
     <MainPageSection
       title={translations[lang].main_page.new_title}

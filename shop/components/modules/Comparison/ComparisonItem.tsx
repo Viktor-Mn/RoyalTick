@@ -13,13 +13,16 @@ import { IProduct } from '@/types/common'
 import { useMemo, useState } from 'react'
 import { $cart, $cartFromLs, addProductToCart } from '@/context/cart'
 import { useGoodsByAuth } from '@/hooks/useGoodsByAuth'
-import { setComparisonFromLS, setShouldShowEmptyComparison } from '@/context/comparison'
+import { deleteItemFromComparison, setComparisonFromLS, setShouldShowEmptyComparison } from '@/context/comparison'
 import DeleteItemBtn from '@/components/elements/DeleteItemBtn/DeleteItemBtn'
+import { useProductDelete } from '@/hooks/useProductDelete'
+import { loadOneProduct } from '@/context/goods'
 
 const ComparisonItem = ({ item }: { item: IComparisonItem }) => {
     const currentCartByAuth = useGoodsByAuth($cart, $cartFromLs)
     const [addToCartSpinner, setAddToCartSpinner] = useState(false)
     const [loadProductSpinner, setLoadProductSpinner] = useState(false)
+    const {handleDelete, deleteSpinner} = useProductDelete(item._id, deleteItemFromComparison)
 
     const isProductInCart = useMemo(
         () =>
@@ -65,6 +68,13 @@ const ComparisonItem = ({ item }: { item: IComparisonItem }) => {
             })
             return
         }
+
+        loadOneProduct({
+            productId: item.productId,
+            category: item.category,
+            withShowingSizeTable: true,
+            setSpinner: setLoadProductSpinner,
+        })
     }
 
     const handleDeleteComparisonItem = () => {
@@ -74,11 +84,12 @@ const ComparisonItem = ({ item }: { item: IComparisonItem }) => {
                 'comparison',
                 setComparisonFromLS,
                 setShouldShowEmptyComparison,
-                'Удалено из сравнения!'
+                'Видалено з порівняння!'
             )
             return
         }
 
+        handleDelete()
         deleteProductFromLS(
             item.clientId,
             'comparison',
@@ -95,8 +106,8 @@ const ComparisonItem = ({ item }: { item: IComparisonItem }) => {
             {...basePropsForMotion}
         >
             <DeleteItemBtn
-                btnDisabled={false}
-                callback={()=>''}
+                btnDisabled={deleteSpinner}
+                callback={handleDeleteComparisonItem}
                 className={styles.comparison__list__item__delete}
             />
             <AddToCartIcon

@@ -19,8 +19,6 @@ export default {
     const url = `${apiUrl}/${resource}/list?${stringify(query)}`;
     const { data } = await axios.get(url);
 
-    console.log("Data received from API:", data);
-
     return {
       data: data.items,
       total: data.count,

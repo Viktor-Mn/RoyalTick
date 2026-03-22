@@ -9,7 +9,6 @@ dotenv.config();
 
 // 2. Примусово ставимо DNS сервери для цього процесу
 dns.setServers(['8.8.8.8', '1.1.1.1']);
-console.log('Migration process: DNS servers set to 8.8.8.8');
 
 const config = {
   mongodb: {
